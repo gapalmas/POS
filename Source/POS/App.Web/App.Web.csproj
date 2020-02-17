@@ -7,8 +7,19 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App"/>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="App.Core">
+      <HintPath>..\App.Infrastructure\bin\Debug\netcoreapp2.2\App.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="App.Infrastructure">
+      <HintPath>..\App.Infrastructure\bin\Debug\netcoreapp2.2\App.Infrastructure.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
