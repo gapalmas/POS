@@ -36,7 +36,7 @@ namespace App.Web.Data
                     FirstName = "Guillermo",
                     LastName = "Palma",
                     Email = "gapalmasolano@gmail.com",
-                    UserName = "gapalmasolano@gmail.com",
+                    UserName = "saintdark",
                     PhoneNumber = "6565659048"
                 };
 

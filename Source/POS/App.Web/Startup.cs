@@ -11,6 +11,7 @@ using System.Text;
 using App.Core.Entities;
 using App.Infrastructure.Data;
 using App.Web.Helpers;
+using App.Web.Data;
 
 namespace App.Web
 {
@@ -57,7 +58,7 @@ namespace App.Web
             });
 
 
-            //services.AddTransient<SeedDb>();
+            services.AddTransient<Seeder>();
 
             //services.AddScoped<IProductRepository, ProductRepository>();
 
