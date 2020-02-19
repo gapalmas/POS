@@ -24,6 +24,7 @@ namespace App.Web.Data
         {
             await context.Database.EnsureCreatedAsync();
 
+            /*Valida que los roles existan*/
             await this.userHelper.CheckRoleAsync("Admin");
             await this.userHelper.CheckRoleAsync("Customer");
 
@@ -36,7 +37,7 @@ namespace App.Web.Data
                     FirstName = "Guillermo",
                     LastName = "Palma",
                     Email = "gapalmasolano@gmail.com",
-                    UserName = "saintdark",
+                    UserName = "gapalmasolano@gmail.com",
                     PhoneNumber = "6565659048"
                 };
 
