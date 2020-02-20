@@ -1,46 +1,73 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using App.Core.Entities;
 using App.Core.Interfaces;
-using App.Core.UseCases;
-using App.Infrastructure.Data;
-using App.Web.Helpers;
 using App.Web.Mappers;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Unity;
+using System.IO;
+using System;
 
 namespace App.Web.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IMapper Mapper;
-        private readonly IUserHelper userHelper;
-        static ManageOperations<Product> ManageOperationsProduct;
-
-        public ProductController(IMapper mapper, IUserHelper userHelper)
+        public IOperations<Product> OperationsProduct;
+        public ProductController(IMapper mapper, IOperations<Product> operations)
         {
             Mapper = mapper;
-            this.userHelper = userHelper;
-            InitializeContainer();
+            OperationsProduct = operations;
         }
 
-
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //var products = ManageOperationsProduct.FindAll(p => p.Status == true);
-            return View(Mapper.Map<ProductDTO>(ManageOperationsProduct.FindAll(p => p.Status == true)));
+            var products = await OperationsProduct.FindAllAsync(c => c.Status == true);
+            var model = Mapper.Map<IEnumerable<ProductDTO>>(products);
+            return View(model);
         }
 
-        static void InitializeContainer()
+        public IActionResult Create()
         {
-            var container = new UnityContainer();
-            container.RegisterType<IOperations<Product>, ManageOperations<Product>>();
-            container.RegisterType<IRepository<Product>, GenericRepository<Product>>();
-            ManageOperationsProduct = container.Resolve<ManageOperations<Product>>();
+            return View();
         }
+
+        // POST: Products/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Price,ImageUrl,Status,Stock,StockMin,StockMax")] Product view)
+        //{
+            //if (ModelState.IsValid)
+            //{
+            //    var guid = Guid.NewGuid().ToString();
+            //    var path = string.Empty;
+
+            //    if (view.ImagePath != null && view.ImagePath.Length > 0)
+            //    {
+            //        //var guid = Guid.NewGuid().ToString();
+            //        var file = $"{guid}.jpg";
+
+            //        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\products", file);
+
+            //        using (var stream = new FileStream(path, FileMode.Create))
+            //        {
+            //            await view.ImagePath.CopyToAsync(stream);
+            //        }
+
+            //        path = $"~/images/Products/{file}";
+            //    }
+
+            //    var product = ToProduct(view, path);
+            //    //product.User = await userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            //    await productRepository.CreateAsync(product);
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            //return View(view);
+
+            //return View(product);
+        //}
     }
 }

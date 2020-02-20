@@ -14,6 +14,8 @@ using App.Web.Helpers;
 using App.Web.Data;
 using AutoMapper;
 using System;
+using App.Core.Interfaces;
+using App.Core.UseCases;
 
 namespace App.Web
 {
@@ -30,14 +32,18 @@ namespace App.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // Auto Mapper Configurations
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
+            // //Auto Mapper Configurations
+            //var mappingConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new MappingProfile());
+            //});
 
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            // IMapper mapper = mappingConfig.CreateMapper();
+            // services.AddSingleton(mapper);
+
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
@@ -72,6 +78,17 @@ namespace App.Web
 
             
             services.AddTransient<Seeder>();
+
+
+
+            /*Startup*/
+
+            services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
+            services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+
+
+
+
 
             //services.AddScoped<IProductRepository, ProductRepository>();
 
