@@ -12,6 +12,8 @@ using App.Core.Entities;
 using App.Infrastructure.Data;
 using App.Web.Helpers;
 using App.Web.Data;
+using AutoMapper;
+using System;
 
 namespace App.Web
 {
@@ -27,6 +29,16 @@ namespace App.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddIdentity<User, IdentityRole>(cfg =>
             {
                 /*Reference:
@@ -41,8 +53,6 @@ namespace App.Web
                 cfg.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<DataContext>();
-
-
 
             services.AddDbContext<DataContext>(cfg =>
             {
@@ -60,7 +70,7 @@ namespace App.Web
                 };
             });
 
-
+            
             services.AddTransient<Seeder>();
 
             //services.AddScoped<IProductRepository, ProductRepository>();
@@ -79,6 +89,9 @@ namespace App.Web
                 options.LoginPath = "/Account/NotAuthorized";
                 options.AccessDeniedPath = "/Account/NotAuthorized";
             });
+
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

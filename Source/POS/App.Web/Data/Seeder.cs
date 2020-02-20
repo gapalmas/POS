@@ -3,6 +3,7 @@ using App.Infrastructure.Data;
 using App.Web.Helpers;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Web.Data
@@ -23,7 +24,7 @@ namespace App.Web.Data
         public async Task SeederAsync()
         {
             await context.Database.EnsureCreatedAsync();
-
+                                                  
             /*Valida que los roles existan*/
             await this.userHelper.CheckRoleAsync("Admin");
             await this.userHelper.CheckRoleAsync("Customer");
@@ -57,26 +58,55 @@ namespace App.Web.Data
                 await this.userHelper.AddUserToRoleAsync(user, "Admin");
             }
 
+            if (!context.Clasification.Any())
+            {
+                context.Clasification.AddRange(
+                new Clasification() { Description = "NEW", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
+                new Clasification() { Description = "HIGH", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
+                new Clasification() { Description = "SEASON", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
+                new Clasification() { Description = "LOW", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true }
+                );
+            }
+            context.SaveChanges();
+            if (!context.Category.Any())
+            {
+                context.Category.AddRange(
+                new Category() { Description = "HERRAMIENTAS", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
+                new Category() { Description = "FERRETERIA", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
+                new Category() { Description = "MADERA", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true }
+                );
+            }
+            context.SaveChanges();
+            if (!context.Warehouse.Any())
+            {
+                context.Warehouse.AddRange(
+                new Warehouse() { Description = "JUAREZ", Ubication = "CHIHUAHUA", CoCe = "CDJRZ", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true }
+                );
+            }
+            context.SaveChanges();
+            if (!context.Unit.Any())
+            {
+                context.Unit.Add(
+                new Unit() { Description = "CAJA", Measure = "PIEZA", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true }
+                );
+                context.SaveChanges();
+            }
 
-            //if (!context.Products.Any())
-            //{
-            //    AddProduct("iPhone X", user);
-            //    AddProduct("Mouse", user);
-            //    AddProduct("Samsung S10", user);
-            //    await context.SaveChangesAsync();
-            //}
+            if (!context.Inventory.Any())
+            {
+                context.Inventory.Add(
+                new Inventory() { Stock = 0, StockMin = 0, StockMax = 0, Location = "", UnitId = 1, Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true, Equal = 0, WarehouseId = 1 }
+                );
+                context.SaveChanges();
+            }
+
+                if (!context.Product.Any())
+            {
+                context.Product.Add(
+                new Product() { Description = "Producto de prueba", Price = 10.5, ClasificationId = 1, CategoryId = 1, InventoryId = 1, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now, ImagePath = "Imagen", PartNumber = "XXXXX" }
+                );
+                context.SaveChanges();
+            }
         }
-
-        //private void AddProduct(string name, User user)
-        //{
-        //    context.Products.Add(new Product
-        //    {
-        //        Name = name,
-        //        Price = random.Next(100),
-        //        IsAvailabe = true,
-        //        Stock = random.Next(100),
-        //        User = user
-        //    });
-        //}
     }
 }
