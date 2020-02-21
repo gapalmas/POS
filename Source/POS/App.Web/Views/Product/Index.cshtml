@@ -43,7 +43,12 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
+                @*@Html.DisplayFor(modelItem => item.ImagePath)*@
+
+                @if (!string.IsNullOrEmpty(item.ImagePath))
+                {
+                    <img src="@Url.Content(item.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 30%; height: auto;" />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PartNumber)

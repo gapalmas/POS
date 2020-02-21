@@ -20,9 +20,16 @@ namespace App.Core.UseCases
         #region 'Create'
         public T Create(T Data)
         {
-            Repository.CreateAsync(Data);
+            Repository.Create(Data);
             return Data;
         }
+
+        public Task<T> CreateAsync(T Data)
+        {
+            return Repository.CreateAsync(Data);
+            //return Data;
+        }
+
         public IEnumerable<T> AddRange(IEnumerable<T> Data)
         {
             Repository.AddRange(Data);
@@ -114,6 +121,7 @@ namespace App.Core.UseCases
         {
             return await Repository.ExistAsync(matchitem);
         }
+
         #endregion
         #endregion
     }

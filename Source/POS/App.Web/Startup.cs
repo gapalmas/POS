@@ -82,9 +82,12 @@ namespace App.Web
 
 
             /*Startup*/
-
+            /*DI for Product*/
             services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
             services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+            /*DI for Product*/
+            services.AddScoped<IOperations<Inventory>, ManageOperations<Inventory>>();
+            services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
 
 
 

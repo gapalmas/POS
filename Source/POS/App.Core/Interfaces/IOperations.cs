@@ -9,6 +9,7 @@ namespace App.Core.Interfaces
     {
         #region'CREATE'
         T Create(T Data);
+        Task<T> CreateAsync(T Data);
         IEnumerable<T> AddRange(IEnumerable<T> Data);
         IEnumerable<T> AddRangeAsync(IEnumerable<T> Data);
         #endregion
