@@ -8,9 +8,11 @@ using App.Web.Mappers;
 using System.IO;
 using System;
 using App.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IMapper Mapper;
