@@ -4,9 +4,9 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Register a new product</h1>
 
-<h4>ProductDTO</h4>
+@*<h4>ProductDTO</h4>*@
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -38,13 +38,13 @@
                 <span asp-validation-for="PartNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
 </div>
 
