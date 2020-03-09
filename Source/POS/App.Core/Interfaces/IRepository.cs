@@ -32,6 +32,8 @@ namespace App.Core.Interfaces
         Task<IEnumerable<T>> FindAllTakeAsync(int count);
         T Get(int id);
         Task<T> GetAsync(int id);
+        IEnumerable<T> FindAllInclude(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
+        Task<IEnumerable<T>> FindAllIncludeAsync(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
         #endregion
         #region 'UPDATE'
         T Update(T obj);
@@ -50,6 +52,7 @@ namespace App.Core.Interfaces
         #region 'EXISTS'
         Boolean Exists(Expression<Func<T, bool>> matchitem);
         Task<Boolean> ExistsAsync(Expression<Func<T, bool>> matchitem);
+        
         #endregion
     }
 }

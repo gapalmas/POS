@@ -24,6 +24,8 @@ namespace App.Core.Interfaces
         IEnumerable<T> FindAll(Expression<Func<T, bool>> matchitem);
         Task<IEnumerable<T>> FindAllTakeAsync(int count);
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> matchitem);
+        IEnumerable<T> FindAllInclude(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
+        Task<IEnumerable<T>> FindAllIncludeAsync(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
         #endregion
         #region 'UPDATE'
         T Update(T Data);
@@ -39,6 +41,7 @@ namespace App.Core.Interfaces
         #region'EXISTS'
         Task<bool> ExistsAsync(Expression<Func<T, bool>> matchitem);
         bool Exists(Expression<Func<T, bool>> matchitem);
+        
         #endregion
     }
 }
