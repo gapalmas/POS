@@ -29,7 +29,7 @@ namespace App.Core.Interfaces
         #endregion
         #region 'UPDATE'
         T Update(T Data);
-        T UpdateAsync(T Data);
+        Task<T> UpdateAsync(T Data);
         #endregion
         #region'DELETE'
         T Delete(T Data);
@@ -41,7 +41,9 @@ namespace App.Core.Interfaces
         #region'EXISTS'
         Task<bool> ExistsAsync(Expression<Func<T, bool>> matchitem);
         bool Exists(Expression<Func<T, bool>> matchitem);
-        
+        T Get(int Id);
+        Task<T> GetAsync(int Id);
+
         #endregion
     }
 }

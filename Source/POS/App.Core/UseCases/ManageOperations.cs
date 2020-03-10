@@ -50,6 +50,15 @@ namespace App.Core.UseCases
         {
             return Repository.GetAsync(Data.Id);
         }
+        public T Get(int Id)
+        {
+            return Repository.Get(Id);
+        }
+        public Task<T> GetAsync(int Id)
+        {
+            return Repository.GetAsync(Id);
+        }
+
         public T Find(Expression<Func<T, bool>> matchitem)
         {
             return Repository.Find(matchitem);
@@ -94,13 +103,11 @@ namespace App.Core.UseCases
         #region'Update'
         public T Update(T Data)
         {
-            Repository.Update(Data);
-            return Data;
+            return Repository.Update(Data);
         }
-        public T UpdateAsync(T Data)
+        public Task<T> UpdateAsync(T Data)
         {
-            Repository.UpdateAsync(Data);
-            return Data;
+            return Repository.UpdateAsync(Data);
         }
         #endregion
         #region 'Delete'

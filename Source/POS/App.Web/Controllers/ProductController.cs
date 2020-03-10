@@ -9,6 +9,8 @@ using System.IO;
 using System;
 using App.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using App.Web.Helpers;
 
 namespace App.Web.Controllers
 {
@@ -63,14 +65,13 @@ namespace App.Web.Controllers
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/Products/{file}";
+                    path = $"~/images/products/{file}";
                 }
 
                 var product = ToProduct(view, path);
                 await OperationsProduct.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
-
             return View(view);
         }
 
@@ -88,9 +89,6 @@ namespace App.Web.Controllers
                 ClasificationId = 1,
                 CategoryId = 1,
                 InventoryId = InventoryId()
-
-
-
             };
         }
 
@@ -100,6 +98,144 @@ namespace App.Web.Controllers
                 new Inventory() { Stock = 0, StockMin = 0, StockMax = 0, Location = "", UnitId = 1, Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true, Equal = 0, WarehouseId = 1 
                 });
             return invetory.Id;
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        // GET: Products/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await OperationsProduct.GetAsync(id.Value);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            //var view = Mapper.Map<ProductDTO>(product);
+            var view = ToProductViewModel(product);
+            return View(view);
+        }
+
+        private ProductViewModel ToProductViewModel(Product product)
+        {
+            return new ProductViewModel
+            {
+                Id = product.Id,
+                Description = product.Description,
+                InventoryId = product.InventoryId,
+                ImagePath = product.ImagePath,
+                PartNumber = product.PartNumber,
+                Price = product.Price
+            };
+        }
+
+        // GET: Products/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return new NotFoundViewResult("ProductNotFound");
+            }
+
+            var product = await OperationsProduct.GetAsync(id.Value);
+            if (product == null)
+            {
+                return new NotFoundViewResult("ProductNotFound");
+            }
+
+            return View(product);
+        }
+
+        // POST: Products/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProductViewModel view)
+        {
+            if (ModelState.IsValid | view.ImageFile is null)
+            {
+                try
+                {
+                    var path = view.ImagePath;
+
+                    if (view.ImageFile != null && view.ImageFile.Length > 0)
+                    {
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+
+                        path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img\\products", file);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await view.ImageFile.CopyToAsync(stream);
+                        }
+
+                        path = $"~/img/products/{file}";
+                    }
+                    var product = OperationsProduct.Find(p => p.Id == view.Id);
+
+                    product.Description = view.Description;
+                    product.Price = view.Price;
+                    product.ImagePath = path;
+                    product.DateUpdate = DateTime.Now;
+
+                    //var products = ToProduct(view, path);
+                    await OperationsProduct.UpdateAsync(product);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await OperationsProduct.ExistsAsync(p => p.Id == view.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(view);
+        }
+
+        [Authorize(Roles = "Admin")]
+        // GET: Products/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await OperationsProduct.GetAsync(id.Value);
+
+            var model = Mapper.Map<ProductDTO>(product);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        // POST: Products/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var product = await OperationsProduct.GetAsync(id);
+            product.Status = false;
+            await OperationsProduct.UpdateAsync(product);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult ProductNotFound()
+        {
+            return this.View();
         }
     }
 }
