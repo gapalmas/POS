@@ -18,21 +18,19 @@ namespace App.Web.Controllers
     public class ProductController : Controller
     {
         private readonly IMapper Mapper;
-        public IOperations<Product> OperationsProduct;
-        public IOperations<Inventory> OperationsInventory;
+        private readonly IOperations<Product> OperationsPro;
+        private readonly IOperations<Inventory> OperationsInv;
 
-        public IOperations<Inventory> OperationsInv { get; }
-
-        public ProductController(IMapper mapper, IOperations<Product> operations, IOperations<Inventory> operationsInv)
+        public ProductController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv)
         {
-            Mapper = mapper;
-            OperationsProduct = operations;
-            OperationsInventory = operationsInv;
+            this.Mapper = Mapper;
+            this.OperationsPro = OperationsPro;
+            this.OperationsInv = OperationsInv;
         }
 
         public async Task<IActionResult> Index()
         {
-            var products = await OperationsProduct.FindAllAsync(c => c.Status == true);
+            var products = await OperationsPro.FindAllAsync(c => c.Status == true);
             var model = Mapper.Map<IEnumerable<ProductDTO>>(products);
             return View(model);
         }
@@ -67,9 +65,8 @@ namespace App.Web.Controllers
 
                     path = $"~/images/products/{file}";
                 }
-
                 var product = ToProduct(view, path);
-                await OperationsProduct.CreateAsync(product);
+                await OperationsPro.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(view);
@@ -94,7 +91,7 @@ namespace App.Web.Controllers
 
         private int InventoryId()
         {
-           var invetory = OperationsInventory.Create(
+           var invetory = OperationsInv.Create(
                 new Inventory() { Stock = 0, StockMin = 0, StockMax = 0, Location = "", UnitId = 1, Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true, Equal = 0, WarehouseId = 1 
                 });
             return invetory.Id;
@@ -110,7 +107,7 @@ namespace App.Web.Controllers
                 return NotFound();
             }
 
-            var product = await OperationsProduct.GetAsync(id.Value);
+            var product = await OperationsPro.GetAsync(id.Value);
             if (product == null)
             {
                 return NotFound();
@@ -141,7 +138,7 @@ namespace App.Web.Controllers
                 return new NotFoundViewResult("ProductNotFound");
             }
 
-            var product = await OperationsProduct.GetAsync(id.Value);
+            var product = await OperationsPro.GetAsync(id.Value);
             if (product == null)
             {
                 return new NotFoundViewResult("ProductNotFound");
@@ -175,7 +172,7 @@ namespace App.Web.Controllers
 
                         path = $"~/img/products/{file}";
                     }
-                    var product = OperationsProduct.Find(p => p.Id == view.Id);
+                    var product = OperationsPro.Find(p => p.Id == view.Id);
 
                     product.Description = view.Description;
                     product.Price = view.Price;
@@ -183,11 +180,11 @@ namespace App.Web.Controllers
                     product.DateUpdate = DateTime.Now;
 
                     //var products = ToProduct(view, path);
-                    await OperationsProduct.UpdateAsync(product);
+                    await OperationsPro.UpdateAsync(product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await OperationsProduct.ExistsAsync(p => p.Id == view.Id))
+                    if (!await OperationsPro.ExistsAsync(p => p.Id == view.Id))
                     {
                         return NotFound();
                     }
@@ -210,7 +207,7 @@ namespace App.Web.Controllers
                 return NotFound();
             }
 
-            var product = await OperationsProduct.GetAsync(id.Value);
+            var product = await OperationsPro.GetAsync(id.Value);
 
             var model = Mapper.Map<ProductDTO>(product);
 
@@ -227,9 +224,9 @@ namespace App.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await OperationsProduct.GetAsync(id);
+            var product = await OperationsPro.GetAsync(id);
             product.Status = false;
-            await OperationsProduct.UpdateAsync(product);
+            await OperationsPro.UpdateAsync(product);
             return RedirectToAction(nameof(Index));
         }
 

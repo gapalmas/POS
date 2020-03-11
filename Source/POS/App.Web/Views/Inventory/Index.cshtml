@@ -1,0 +1,64 @@
+﻿@model IEnumerable<App.Web.Mappers.InventoryDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Inventory</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.InventoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockMin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockMax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => item.InventoryId)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockMin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockMax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
+                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

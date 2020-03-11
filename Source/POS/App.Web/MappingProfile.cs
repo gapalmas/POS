@@ -9,6 +9,8 @@ namespace App.Web
         public MappingProfile()
         {
             CreateMap<Product, ProductDTO>();
+            CreateMap<Product, InventoryDTO>();
+            CreateMap<Inventory, AddInventoryDTO>();
         }
     }
 }
