@@ -27,9 +27,7 @@ namespace App.Web.Controllers
         // GET: Inventory
         public async Task<ActionResult> Index()
         {
-            var products = await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory);
-            var model = Mapper.Map<IEnumerable<InventoryDTO>>(products);
-            return View(model);
+            return View(Mapper.Map<IEnumerable<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
         }
 
         // GET: Inventory/Details/5
@@ -63,6 +61,7 @@ namespace App.Web.Controllers
             try
             {
                 var Inventory = await OperationsInv.GetAsync(view.Id);
+                Inventory.Stock = (Inventory.Stock + view.Stock);
                 await OperationsInv.UpdateAsync(Inventory);
                 return RedirectToAction(nameof(Index));
             }
@@ -73,9 +72,22 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            //ToDo: Add Method for include Inventory on Product only one entity
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var inventory = await OperationsInv.GetAsync(id.Value);
+            if (inventory == null)
+            {
+                return NotFound();
+            }
+
+            //return list of all products,  I need T object
+            return View(Mapper.Map<IEnumerable<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
         }
 
         // POST: Inventory/Edit/5
@@ -86,29 +98,6 @@ namespace App.Web.Controllers
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Inventory/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Inventory/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
             }

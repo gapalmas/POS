@@ -30,9 +30,7 @@ namespace App.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var products = await OperationsPro.FindAllAsync(c => c.Status == true);
-            var model = Mapper.Map<IEnumerable<ProductDTO>>(products);
-            return View(model);
+            return View(Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
         }
 
         public IActionResult Create()

@@ -19,16 +19,16 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Stock)
+                @Html.DisplayNameFor(model => model.Inventory.Stock)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StockMin)
+                @Html.DisplayNameFor(model => model.Inventory.StockMin)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StockMax)
+                @Html.DisplayNameFor(model => model.Inventory.StockMax)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.Inventory.Location)
             </th>
             <th></th>
         </tr>
@@ -43,16 +43,16 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Stock)
+                @Html.DisplayFor(modelItem => item.Inventory.Stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockMin)
+                @Html.DisplayFor(modelItem => item.Inventory.StockMin)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StockMax)
+                @Html.DisplayFor(modelItem => item.Inventory.StockMax)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.Inventory.Location)
             </td>
             <td>
                 <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
