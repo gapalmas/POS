@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@*<h1>Edit</h1>*@
 
-<h4>InventoryDTO</h4>
+<h4>Edit Inventory</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,23 +14,33 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="InventoryId" class="control-label"></label>
-                <input asp-for="InventoryId" class="form-control" />
+                <input asp-for="InventoryId" class="form-control" readonly />
                 <span asp-validation-for="InventoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" readonly />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="Inventory.StockMin" class="control-label"></label>
+                <input asp-for="Inventory.StockMin" class="form-control" type="number" />
+                <span asp-validation-for="Inventory.StockMin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Inventory.StockMax" class="control-label"></label>
+                <input asp-for="Inventory.StockMax" class="form-control" type="number" />
+                <span asp-validation-for="Inventory.StockMax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-outline-success" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
 </div>
 
 @section Scripts {

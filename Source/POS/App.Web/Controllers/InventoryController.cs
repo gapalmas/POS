@@ -74,22 +74,18 @@ namespace App.Web.Controllers
         // GET: Inventory/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
-            //ToDo: Add Method for include Inventory on Product only one entity
             if (id == null)
             {
                 return NotFound();
             }
-
-            var inventory = await OperationsInv.GetAsync(id.Value);
-            if (inventory == null)
+            var product = await OperationsPro.FindIncludeAsync(p => p.InventoryId == id.Value, p => p.Inventory);
+            if (product == null)
             {
                 return NotFound();
             }
-
-            //return list of all products,  I need T object
-            return View(Mapper.Map<IEnumerable<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
+            return View(Mapper.Map<InventoryDTO>(product));
         }
-
+               
         // POST: Inventory/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]

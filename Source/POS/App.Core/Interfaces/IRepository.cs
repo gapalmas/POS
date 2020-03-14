@@ -52,7 +52,9 @@ namespace App.Core.Interfaces
         #region 'EXISTS'
         Boolean Exists(Expression<Func<T, bool>> matchitem);
         Task<Boolean> ExistsAsync(Expression<Func<T, bool>> matchitem);
-        
+        T FindInclude(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
+        Task<T> FindIncludeAsync(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
+
         #endregion
     }
 }

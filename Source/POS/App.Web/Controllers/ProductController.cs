@@ -61,7 +61,7 @@ namespace App.Web.Controllers
                         await view.ImageFile.CopyToAsync(stream);
                     }
 
-                    path = $"~/images/products/{file}";
+                    path = $"~/img/products/{file}";
                 }
                 var product = ToProduct(view, path);
                 await OperationsPro.CreateAsync(product);
@@ -110,7 +110,6 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-            //var view = Mapper.Map<ProductDTO>(product);
             var view = ToProductViewModel(product);
             return View(view);
         }
@@ -175,6 +174,7 @@ namespace App.Web.Controllers
                     product.Description = view.Description;
                     product.Price = view.Price;
                     product.ImagePath = path;
+                    product.PartNumber = view.PartNumber;
                     product.DateUpdate = DateTime.Now;
 
                     //var products = ToProduct(view, path);
