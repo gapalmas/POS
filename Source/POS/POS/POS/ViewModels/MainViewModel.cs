@@ -8,7 +8,7 @@ namespace POS.ViewModels
     {
         public LoginViewModel Login { get; set; }
 
-        //ToDo: Quitar instancia
+        //ToDo: Remove Instance
         public MainViewModel()
         {
             this.Login = new LoginViewModel();

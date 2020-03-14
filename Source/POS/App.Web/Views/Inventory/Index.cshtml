@@ -27,9 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Inventory.StockMax)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Inventory.Location)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -51,9 +51,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Inventory.StockMax)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Inventory.Location)
-            </td>
+            </td>*@
             <td>
                 <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
                 <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>

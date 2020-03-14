@@ -145,10 +145,15 @@ namespace App.Web.Controllers
         }
 
         // POST: Products/Edit/5
+        // ToDO : Evaluate ImageFile for show path or not.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductViewModel view)
         {
+            if (view == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid | view.ImageFile is null)
             {
                 try

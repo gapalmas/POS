@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using App.Web.Mappers;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Web.Controllers
 {
@@ -28,12 +30,6 @@ namespace App.Web.Controllers
         public async Task<ActionResult> Index()
         {
             return View(Mapper.Map<IEnumerable<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
-        }
-
-        // GET: Inventory/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
 
         // GET: Inventory/Create
@@ -89,18 +85,36 @@ namespace App.Web.Controllers
         // POST: Inventory/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(InventoryDTO view)
         {
-            try
+            if (view == null)
             {
-                // TODO: Add update logic here
-
+                return NotFound();
+            }
+            var inventory = await OperationsInv.FindAsync(i => i.Id == view.InventoryId);
+            if (inventory != null)
+            {
+                try
+                {
+                    inventory.StockMin = view.Inventory.StockMin;
+                    inventory.StockMax = view.Inventory.StockMax;
+                    inventory.DateUpdate = DateTime.Now;
+                    await OperationsInv.UpdateAsync(inventory);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await OperationsInv.ExistsAsync(p => p.Id == view.InventoryId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(view);
         }
     }
 }
