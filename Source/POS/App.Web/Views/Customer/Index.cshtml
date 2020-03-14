@@ -1,0 +1,70 @@
+﻿@model IEnumerable<App.Web.Mappers.CustomerDTO>
+
+@{
+    ViewData["Title"] = "Customers";
+}
+
+<h1>Customers</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommercialName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BussinessName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rfc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DayCredit)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommercialName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BussinessName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rfc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DayCredit)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
