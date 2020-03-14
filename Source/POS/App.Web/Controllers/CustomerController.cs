@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Web.Controllers
 {
@@ -61,49 +62,88 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var customer = await OperationsCus.FindAsync(p => p.Id == id.Value);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return View(Mapper.Map<CustomerDTO>(customer));
         }
 
         // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(CustomerDTO view)
         {
-            try
+            if (view == null)
             {
-                // TODO: Add update logic here
-
+                return NotFound();
+            }
+            var customer = await OperationsCus.FindAsync(i => i.Id == view.Id);
+            if (customer != null)
+            {
+                try
+                {
+                    customer.BussinessName = view.BussinessName;
+                    customer.CommercialName = view.CommercialName;
+                    customer.DayCredit = view.DayCredit;
+                    customer.Cp = view.Cp;
+                    customer.Address = view.Address;
+                    customer.Rfc = view.Rfc;
+                    customer.DateUpdate = DateTime.Now;
+                    await OperationsCus.UpdateAsync(customer);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!await OperationsCus.ExistsAsync(p => p.Id == view.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(view);
         }
 
         // GET: Customer/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await OperationsCus.GetAsync(id.Value);
+
+            var model = Mapper.Map<CustomerDTO>(customer);
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
         }
 
         // POST: Customer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var customer = await OperationsCus.GetAsync(id);
+            customer.Status = false;
+            await OperationsCus.UpdateAsync(customer);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
