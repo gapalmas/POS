@@ -12,6 +12,7 @@ namespace App.Web
             CreateMap<Product, InventoryDTO>();
             CreateMap<Inventory, AddInventoryDTO>();
             CreateMap<Customer, CustomerDTO>();
+            CreateMap<Supplier, SupplierDTO>();
         }
     }
 }

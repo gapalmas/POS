@@ -88,9 +88,12 @@ namespace App.Web
             /*DI for Product*/
             services.AddScoped<IOperations<Inventory>, ManageOperations<Inventory>>();
             services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
-            /*DI for Product*/
+            /*DI for Customer*/
             services.AddScoped<IOperations<Customer>, ManageOperations<Customer>>();
             services.AddScoped<IRepository<Customer>, GenericRepository<Customer>>();
+            /*DI for Supplier*/
+            services.AddScoped<IOperations<Supplier>, ManageOperations<Supplier>>();
+            services.AddScoped<IRepository<Supplier>, GenericRepository<Supplier>>();
 
 
 
