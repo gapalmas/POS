@@ -94,7 +94,9 @@ namespace App.Web
             /*DI for Supplier*/
             services.AddScoped<IOperations<Supplier>, ManageOperations<Supplier>>();
             services.AddScoped<IRepository<Supplier>, GenericRepository<Supplier>>();
-
+            /*DI for InventoryIO*/
+            services.AddScoped<IOperations<Inventoryio>, ManageOperations<Inventoryio>>();
+            services.AddScoped<IRepository<Inventoryio>, GenericRepository<Inventoryio>>();
 
 
 

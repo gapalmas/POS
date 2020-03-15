@@ -18,12 +18,14 @@ namespace App.Web.Controllers
         private readonly IMapper Mapper;
         private readonly IOperations<Product> OperationsPro;
         private readonly IOperations<Inventory> OperationsInv;
+        private readonly IOperations<Inventoryio> OperationsInvIo;
 
-        public InventoryController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv)
+        public InventoryController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv, IOperations<Inventoryio> OperationsInvIo)
         {
             this.Mapper = Mapper;
             this.OperationsPro = OperationsPro;
             this.OperationsInv = OperationsInv;
+            this.OperationsInvIo = OperationsInvIo;
         }
 
         // GET: Inventory
@@ -59,6 +61,15 @@ namespace App.Web.Controllers
                 var Inventory = await OperationsInv.GetAsync(view.Id);
                 Inventory.Stock = (Inventory.Stock + view.Stock);
                 await OperationsInv.UpdateAsync(Inventory);
+                var inventoryIo = new Inventoryio 
+                { 
+                    Quantity = view.Stock, 
+                    Date = DateTime.Now, 
+                    DateUpdate = DateTime.Now, 
+                    Status = true, 
+                    InventoryId = view.Id
+                };
+                await OperationsInvIo.CreateAsync(inventoryIo);
                 return RedirectToAction(nameof(Index));
             }
             catch
