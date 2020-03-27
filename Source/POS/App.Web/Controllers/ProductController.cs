@@ -33,10 +33,7 @@ namespace App.Web.Controllers
         {
 
             int pageSize = 3;
-            //return View(await PaginatedList<ProductDTO>.CreateAsync(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
             return View(PaginatedList<ProductDTO>.Create(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
-
-            //return View(Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
         }
 
         public IActionResult Create()

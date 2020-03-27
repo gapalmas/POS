@@ -1,4 +1,5 @@
-﻿@model IEnumerable<App.Web.Mappers.InventoryDTO>
+﻿@*@model IEnumerable<App.Web.Mappers.InventoryDTO>*@
+@model PaginatedList<App.Web.Mappers.InventoryDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,58 +8,94 @@
 <h1>Inventory</h1>
 
 @*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+        <a asp-action="Create">Create New</a>
+    </p>*@
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InventoryId)
+                Inventory Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Description
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Inventory.Stock)
+                Stock
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Inventory.StockMin)
+                StockMin
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Inventory.StockMax)
+                StockMax
             </th>
+
             @*<th>
-                @Html.DisplayNameFor(model => model.Inventory.Location)
-            </th>*@
+                    @Html.DisplayNameFor(model => model.InventoryId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inventory.Stock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inventory.StockMin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Inventory.StockMax)
+                </th>*@
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Inventory.Location)
+                </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.InventoryId)
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inventory.Stock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inventory.StockMin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Inventory.StockMax)
-            </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.Inventory.Location)
-            </td>*@
-            <td>
-                <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
-                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.InventoryId)
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inventory.Stock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inventory.StockMin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Inventory.StockMax)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Inventory.Location)
+                    </td>*@
+                <td>
+                    <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
+                    <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-secondary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-outline-secondary @nextDisabled">
+    Next
+</a>

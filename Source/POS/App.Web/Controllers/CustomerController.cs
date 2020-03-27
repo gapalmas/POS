@@ -7,7 +7,6 @@ using App.Core.Interfaces;
 using App.Web.Mappers;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,9 +24,10 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? pageNumber)
         {
-            return View(Mapper.Map<IEnumerable<CustomerDTO>>(await OperationsCus.FindAllAsync(p => p.Status == true)));
+            int pageSize = 3;
+            return View(PaginatedList<CustomerDTO>.Create(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(p => p.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Customer/Create

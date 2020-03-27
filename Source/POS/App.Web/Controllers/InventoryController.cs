@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace App.Web.Controllers
 {
@@ -29,9 +30,10 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? pageNumber)
         {
-            return View(Mapper.Map<IEnumerable<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
+            int pageSize = 3;
+            return View(PaginatedList<InventoryDTO>.Create(Mapper.Map<IList<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Inventory/Create
