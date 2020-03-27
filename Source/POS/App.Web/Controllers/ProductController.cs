@@ -11,6 +11,7 @@ using App.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using App.Web.Helpers;
+using System.Linq;
 
 namespace App.Web.Controllers
 {
@@ -28,9 +29,14 @@ namespace App.Web.Controllers
             this.OperationsInv = OperationsInv;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            return View(Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
+
+            int pageSize = 3;
+            //return View(await PaginatedList<ProductDTO>.CreateAsync(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
+            return View(PaginatedList<ProductDTO>.Create(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
+
+            //return View(Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
         }
 
         public IActionResult Create()
