@@ -85,7 +85,7 @@ namespace App.Web
             /*DI for Product*/
             services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
             services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
-            /*DI for Product*/
+            /*DI for Inventory*/
             services.AddScoped<IOperations<Inventory>, ManageOperations<Inventory>>();
             services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
             /*DI for Customer*/
@@ -97,6 +97,9 @@ namespace App.Web
             /*DI for InventoryIO*/
             services.AddScoped<IOperations<Inventoryio>, ManageOperations<Inventoryio>>();
             services.AddScoped<IRepository<Inventoryio>, GenericRepository<Inventoryio>>();
+            /*DI for Purchase*/
+            services.AddScoped<IOperations<Purchaseorder>, ManageOperations<Purchaseorder>>();
+            services.AddScoped<IRepository<Purchaseorder>, GenericRepository<Purchaseorder>>();
 
 
 
