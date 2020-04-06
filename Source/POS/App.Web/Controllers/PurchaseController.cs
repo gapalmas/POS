@@ -15,11 +15,13 @@ namespace App.Web.Controllers
     {
         private readonly IMapper Mapper;
         private readonly IOperations<Purchaseorder> OperationsPur;
+        private readonly IOperations<Customer> OperationsCus;
 
-        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur)
+        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Customer> operationsCus)
         {
             Mapper = mapper;
             OperationsPur = operationsPur;
+            OperationsCus = operationsCus;
         }
 
         // GET: Purchase
@@ -36,8 +38,16 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var customer = Mapper.Map<IEnumerable<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            List<CustomerDTO> model = new List<CustomerDTO>(customer);
+            ViewBag.CustomerList = model;
             return View();
         }
 
