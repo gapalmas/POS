@@ -1,4 +1,5 @@
-﻿using System;
+﻿using App.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,5 +16,6 @@ namespace App.Web.Mappers
         public int CategoryId { get; set; }
         public int ClasificationId { get; set; }
         public int InventoryId { get; set; }
+        public virtual Inventory Inventory { get; set; }
     }
 }

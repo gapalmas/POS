@@ -100,7 +100,9 @@ namespace App.Web
             /*DI for Purchase*/
             services.AddScoped<IOperations<Purchaseorder>, ManageOperations<Purchaseorder>>();
             services.AddScoped<IRepository<Purchaseorder>, GenericRepository<Purchaseorder>>();
-
+            /*DI for Order items sales*/
+            services.AddScoped<IOperations<Orderitemssales>, ManageOperations<Orderitemssales>>();
+            services.AddScoped<IRepository<Orderitemssales>, GenericRepository<Orderitemssales>>();
 
 
             //services.AddScoped<IProductRepository, ProductRepository>();

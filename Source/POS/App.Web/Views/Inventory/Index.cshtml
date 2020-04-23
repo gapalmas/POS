@@ -72,10 +72,11 @@
                 @*<td>
                         @Html.DisplayFor(modelItem => item.Inventory.Location)
                     </td>*@
-                <td>
-                    <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
-                    <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
-                </td>
+            <td>
+                <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add More</a>
+                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
+                <a asp-action="Remove" asp-route-id="@item.InventoryId" class="btn btn-outline-danger">Remove</a>
+            </td>
             </tr>
         }
     </tbody>

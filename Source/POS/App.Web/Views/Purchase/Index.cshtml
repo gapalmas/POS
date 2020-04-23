@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<App.Web.Mappers.PurchaseDTO>*@
-@model PaginatedList<App.Web.Mappers.PurchaseDTO>
+@model PaginatedList<App.Web.Mappers.CustomerDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -19,9 +19,9 @@
             <th>
                 Customer
             </th>
-            <th>
+            @*<th>
                 Items
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -33,16 +33,14 @@
             @Html.DisplayFor(modelItem => item.Id)
         </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.BussinessName)
+                @Html.DisplayFor(modelItem => item.BussinessName)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Orderitemssales.Count)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            </td>*@
+        <td>
+            <a asp-action="Create" asp-route-id="@item.Id" class="btn btn-outline-primary">Add More</a>
+        </td>
         </tr>
         }
     </tbody>

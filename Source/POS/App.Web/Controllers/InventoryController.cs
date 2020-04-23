@@ -20,13 +20,27 @@ namespace App.Web.Controllers
         private readonly IOperations<Product> OperationsPro;
         private readonly IOperations<Inventory> OperationsInv;
         private readonly IOperations<Inventoryio> OperationsInvIo;
+        private readonly IOperations<Customer> OperationsCus;
+        private readonly IOperations<Purchaseorder> OperationPur;
+        private readonly IOperations<Orderitemssales> OperationIte;
 
-        public InventoryController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv, IOperations<Inventoryio> OperationsInvIo)
+
+        public InventoryController(
+            IMapper Mapper, 
+            IOperations<Product> OperationsPro, 
+            IOperations<Inventory> OperationsInv, 
+            IOperations<Inventoryio> OperationsInvIo, 
+            IOperations<Customer> OperationsCus, 
+            IOperations<Purchaseorder> OperationPur,
+            IOperations<Orderitemssales> OperationIte)
         {
             this.Mapper = Mapper;
             this.OperationsPro = OperationsPro;
             this.OperationsInv = OperationsInv;
             this.OperationsInvIo = OperationsInvIo;
+            this.OperationsCus = OperationsCus;
+            this.OperationPur = OperationPur;
+            this.OperationIte = OperationIte;
         }
 
         // GET: Inventory
@@ -129,6 +143,68 @@ namespace App.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(view);
+        }
+
+        // GET: Inventory/Edit/5
+        public async Task<ActionResult> Remove(int? id)
+        {
+            // ToDO: Add Filter & Validation & Message notifcation on Low Inventory <= 0
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var products = await OperationsPro.FindAsync(p => p.InventoryId == id.Value);
+            if (products == null)
+            {
+                return NotFound();
+            }
+            var model = Mapper.Map<RemoveInventoryDTO>(products);
+
+            
+            /* Lista para crear productos*/
+            var customer = Mapper.Map<IEnumerable<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
+
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            List<CustomerDTO> Customers = new List<CustomerDTO>(customer);
+            ViewBag.CustomerList = Customers;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Remove(RemoveInventoryDTO view)
+        {
+            try
+            {
+                var Inventory = await OperationsInv.GetAsync(view.InventoryId);
+
+                if (Inventory.Stock >= view.Stock)
+                {
+                    Inventory.Stock = (Inventory.Stock - view.Stock);
+                    Inventory.DateUpdate = DateTime.Now;
+                    await OperationsInv.UpdateAsync(Inventory);
+                    var inventoryIo = new Inventoryio
+                    {
+                        Quantity = view.Stock,
+                        Date = DateTime.Now,
+                        DateUpdate = DateTime.Now,
+                        Status = false,
+                        InventoryId = view.InventoryId
+                    };
+                    await OperationsInvIo.CreateAsync(inventoryIo);
+                    var po = await OperationPur.CreateAsync(new Purchaseorder { Status = true, CustomerId = view.CustomerId, Date = DateTime.Now, DateUpdate = DateTime.Now });
+                    var itempo = await OperationIte.CreateAsync(new Orderitemssales { Status = true, Quantity = view.Stock, ProductId = view.Id, PurchaseOrderId = po.Id });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
