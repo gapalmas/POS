@@ -16,6 +16,7 @@ using AutoMapper;
 using System;
 using App.Core.Interfaces;
 using App.Core.UseCases;
+using App.Web.Features.Alerts;
 
 namespace App.Web
 {
@@ -122,9 +123,14 @@ namespace App.Web
                 options.AccessDeniedPath = "/Account/NotAuthorized";
             });
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<AlertService>();
+
             //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddSessionStateTempDataProvider();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -147,6 +153,8 @@ namespace App.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

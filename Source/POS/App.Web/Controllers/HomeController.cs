@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using App.Web.Features.Alerts;
 using App.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace App.Web.Controllers
 {
     public class HomeController : Controller
     {
+        public HomeController(AlertService alertService)
+        {
+            _alertService = alertService;
+        }
+
+        public AlertService _alertService { get; }
+
         public IActionResult Index()
         {
+            _alertService.Success("This is the alert", true);
             return View();
         }
 
@@ -27,7 +32,7 @@ namespace App.Web.Controllers
         }
 
         [Route("error/404")]
-        public  IActionResult Error404()
+        public IActionResult Error404()
         {
             return View();
         }
