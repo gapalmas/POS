@@ -7,16 +7,12 @@ namespace App.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(AlertService alertService)
+        public HomeController()
         {
-            _alertService = alertService;
         }
-
-        public AlertService _alertService { get; }
 
         public IActionResult Index()
         {
-            _alertService.Success("This is the alert", true);
             return View();
         }
 

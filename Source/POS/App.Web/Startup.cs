@@ -124,7 +124,7 @@ namespace App.Web
             });
 
             services.AddHttpContextAccessor();
-            services.AddScoped<AlertService>();
+            //services.AddScoped<AlertService>();
 
             //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
