@@ -27,20 +27,20 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase
-        public async Task<ActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             int pageSize = 3;
             return View(PaginatedList<CustomerDTO>.Create(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Purchase/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             return View();
         }
 
         // GET: Purchase/Create
-        public async Task<ActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (id == null)
             {
@@ -73,7 +73,7 @@ namespace App.Web.Controllers
         // POST: Purchase/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ProductDTO view)
+        public async Task<IActionResult> Create(ProductDTO view)
         {
             var customer = await OperationsCus.FindAsync(p => p.Id == view.Id);
 
@@ -94,7 +94,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -102,7 +102,7 @@ namespace App.Web.Controllers
         // POST: Purchase/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
@@ -125,7 +125,7 @@ namespace App.Web.Controllers
         // POST: Purchase/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {

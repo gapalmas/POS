@@ -24,7 +24,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer
-        public async Task<ActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             int pageSize = 3;
             return View(PaginatedList<SupplierDTO>.Create(Mapper.Map<IList<SupplierDTO>>(await OperationsSup.FindAllAsync(p => p.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
@@ -39,7 +39,7 @@ namespace App.Web.Controllers
         // POST: Customer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(SupplierDTO view)
+        public async Task<IActionResult> Create(SupplierDTO view)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -80,7 +80,7 @@ namespace App.Web.Controllers
         // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(SupplierDTO view)
+        public async Task<IActionResult> Edit(SupplierDTO view)
         {
             if (view == null)
             {
@@ -117,7 +117,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -139,7 +139,7 @@ namespace App.Web.Controllers
         // POST: Customer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var supplier = await OperationsSup.GetAsync(id);
             supplier.Status = false;

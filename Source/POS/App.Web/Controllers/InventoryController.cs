@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using App.Web.Extensions.Alerts;
 
 namespace App.Web.Controllers
 {
@@ -44,14 +45,14 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory
-        public async Task<ActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             int pageSize = 3;
             return View(PaginatedList<InventoryDTO>.Create(Mapper.Map<IList<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Inventory/Create
-        public async Task<ActionResult> Create(int? id)
+        public async Task<IActionResult> Create(int? id)
         {
             if (id == null)
             {
@@ -70,7 +71,7 @@ namespace App.Web.Controllers
         // POST: Inventory/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(AddInventoryDTO view)
+        public async Task<IActionResult> Create(AddInventoryDTO view)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -113,7 +114,7 @@ namespace App.Web.Controllers
         // POST: Inventory/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(InventoryDTO view)
+        public async Task<IActionResult> Edit(InventoryDTO view)
         {
             if (view == null)
             {
@@ -146,7 +147,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory/Edit/5
-        public async Task<ActionResult> Remove(int? id)
+        public async Task<IActionResult> Remove(int? id)
         {
             // ToDO: Add Filter & Validation & Message notifcation on Low Inventory <= 0
             if (id == null)
@@ -158,7 +159,14 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-            var model = Mapper.Map<RemoveInventoryDTO>(products);
+            var Inventory = await OperationsInv.GetAsync(id.Value);
+            if (Inventory.Stock <= 0)
+            {
+                return RedirectToAction(nameof(Index)).WithWarning("Insufficient invetory!", "You need to add more inventory."); ;
+            }
+
+
+                var model = Mapper.Map<RemoveInventoryDTO>(products);
 
             
             /* Lista para crear productos*/
@@ -176,7 +184,7 @@ namespace App.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Remove(RemoveInventoryDTO view)
+        public async Task<IActionResult> Remove(RemoveInventoryDTO view)
         {
             try
             {

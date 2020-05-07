@@ -24,14 +24,14 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer
-        public async Task<ActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
             int pageSize = 3;
             return View(PaginatedList<CustomerDTO>.Create(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(p => p.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Customer/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -39,7 +39,7 @@ namespace App.Web.Controllers
         // POST: Customer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CustomerDTO view)
+        public async Task<IActionResult> Create(CustomerDTO view)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -79,7 +79,7 @@ namespace App.Web.Controllers
         // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(CustomerDTO view)
+        public async Task<IActionResult> Edit(CustomerDTO view)
         {
             if (view == null)
             {
@@ -116,7 +116,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -138,7 +138,7 @@ namespace App.Web.Controllers
         // POST: Customer/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var customer = await OperationsCus.GetAsync(id);
             customer.Status = false;
