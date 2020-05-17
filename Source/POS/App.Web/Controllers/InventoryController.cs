@@ -149,7 +149,6 @@ namespace App.Web.Controllers
         // GET: Inventory/Edit/5
         public async Task<IActionResult> Remove(int? id)
         {
-            // ToDO: Add Filter & Validation & Message notifcation on Low Inventory <= 0
             if (id == null)
             {
                 return NotFound();
@@ -189,8 +188,11 @@ namespace App.Web.Controllers
             try
             {
                 var Inventory = await OperationsInv.GetAsync(view.InventoryId);
-
-                if (Inventory.Stock >= view.Stock)
+                if (view.Stock > Inventory.Stock)
+                {
+                    return RedirectToAction(nameof(Index)).WithWarning("Insufficient invetory!", "You need to add more inventory."); ;
+                }
+                else
                 {
                     Inventory.Stock = (Inventory.Stock - view.Stock);
                     Inventory.DateUpdate = DateTime.Now;
