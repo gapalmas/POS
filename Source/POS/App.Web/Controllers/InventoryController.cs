@@ -58,7 +58,8 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-            var products = await OperationsInv.FindAsync(p => p.Id == id.Value);
+            var products = await OperationsPro.FindIncludeAsync(p => p.InventoryId == id.Value, p => p.Inventory);
+            //var products = await OperationsInv.FindAsync(p => p.Id == id.Value);
             if (products == null)
             {
                 return NotFound();
@@ -85,7 +86,8 @@ namespace App.Web.Controllers
                     Date = DateTime.Now, 
                     DateUpdate = DateTime.Now, 
                     Status = true, 
-                    InventoryId = view.Id
+                    InventoryId = view.Id,
+                    Price = view.Price
                 };
                 await OperationsInvIo.CreateAsync(inventoryIo);
                 return RedirectToAction(nameof(Index));
@@ -203,11 +205,12 @@ namespace App.Web.Controllers
                         Date = DateTime.Now,
                         DateUpdate = DateTime.Now,
                         Status = false,
-                        InventoryId = view.InventoryId
+                        InventoryId = view.InventoryId,
+                        Price = view.Price
                     };
                     await OperationsInvIo.CreateAsync(inventoryIo);
                     var po = await OperationPur.CreateAsync(new Purchaseorder { Status = true, CustomerId = view.CustomerId, Date = DateTime.Now, DateUpdate = DateTime.Now });
-                    var itempo = await OperationIte.CreateAsync(new Orderitemssales { Status = true, Quantity = view.Stock, ProductId = view.Id, PurchaseOrderId = po.Id });
+                    var itempo = await OperationIte.CreateAsync(new Orderitemssales { Status = true, Quantity = view.Stock, ProductId = view.Id, PurchaseOrderId = po.Id, Price = view.Price, Date = DateTime.Now, DateUpdate = DateTime.Now });
                 }
                 return RedirectToAction(nameof(Index));
             }

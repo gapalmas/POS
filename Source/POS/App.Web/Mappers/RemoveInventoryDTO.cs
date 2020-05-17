@@ -9,6 +9,7 @@ namespace App.Web.Mappers
     {
         public int Id { get; set; }
         public double Stock { get; set; }
+        public decimal Price { get; set; }
         public int InventoryId { get; set; }
         public int CustomerId { get; set; }
     }
