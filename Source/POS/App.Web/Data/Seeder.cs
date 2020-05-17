@@ -100,13 +100,22 @@ namespace App.Web.Data
                 context.SaveChanges();
             }
 
-                if (!context.Product.Any())
+            if (!context.Product.Any())
             {
                 context.Product.Add(
                 new Product() { Description = "Producto de prueba", Price = 10.5, ClasificationId = 1, CategoryId = 1, InventoryId = 1, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now, ImagePath = "Imagen", PartNumber = "XXXXX" }
                 );
                 context.SaveChanges();
             }
+
+            if (!context.Customer.Any())
+            {
+                context.Customer.Add(
+                new Customer() { CommercialName = "Cliente de prueba", BussinessName = "Cliente de prueba", Address = "Address", Cp= 32576, Rfc = "PASG840415NY3" , DayCredit = 15, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
+
         }
     }
 }
