@@ -1,5 +1,5 @@
-﻿@*@model IEnumerable<App.Web.Mappers.ProductDTO>*@
-@model PaginatedList<App.Web.Mappers.ProductDTO>
+﻿@model IEnumerable<App.Web.Mappers.ProductDTO>
+@*@model PaginatedList<App.Web.Mappers.ProductDTO>*@
 
 
 
@@ -7,100 +7,93 @@
     ViewData["Title"] = "Products";
 }
 
-<h1>Products</h1>
+@*<h1>Products</h1>*@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+<br />
 
 <p>
     <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                ImagePath
-            </th>
-            <th>
-                PartNumber
-            </th>
 
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImagePath)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PartNumber)
-                </th>*@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.ImagePath)*@
 
-                    @if (!string.IsNullOrEmpty(item.ImagePath))
-                    {
-                        <img src="@Url.Content(item.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 30%; height: auto;" />
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PartNumber)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a>
-                    @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>*@
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Inventory</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="ProductsTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                ImagePath
+                            </th>
+                            <th>
+                                PartNumber
+                            </th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @*@Html.DisplayFor(modelItem => item.ImagePath)*@
+
+                                    @if (!string.IsNullOrEmpty(item.ImagePath))
+                                    {
+                                        <img src="@Url.Content(item.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 30%; height: auto;" />
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PartNumber)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Edit</a>
+                                    @*<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Details</a>*@
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ProductsTable').DataTable();
+        });
+    </script>
 }
-
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-outline-secondary @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-outline-secondary @nextDisabled">
-    Next
-</a>

@@ -45,10 +45,11 @@ namespace App.Web.Controllers
         }
 
         // GET: Inventory
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index()
         {
-            int pageSize = 3;
-            return View(PaginatedList<InventoryDTO>.Create(Mapper.Map<IList<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)).AsQueryable(), pageNumber ?? 1, pageSize));
+            return View(Mapper.Map<IList<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)));
+            //int pageSize = 3;
+            //return View(PaginatedList<InventoryDTO>.Create(Mapper.Map<IList<InventoryDTO>>(await OperationsPro.FindAllIncludeAsync(p => p.Status == true, p => p.Inventory)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Inventory/Create

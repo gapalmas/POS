@@ -29,11 +29,12 @@ namespace App.Web.Controllers
             this.OperationsInv = OperationsInv;
         }
 
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index()
         {
 
-            int pageSize = 3;
-            return View(PaginatedList<ProductDTO>.Create(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
+            return View(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
+            //int pageSize = 3;
+            //return View(PaginatedList<ProductDTO>.Create(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Create()

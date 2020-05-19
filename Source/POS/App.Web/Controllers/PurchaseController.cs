@@ -27,19 +27,46 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index()
         {
-            int pageSize = 3;
-            return View(PaginatedList<CustomerDTO>.Create(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
+            //int pageSize = 3;
+            return View(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)));
+            //return View(PaginatedList<PurchaseDTO>.Create(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Purchase/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details()
         {
             return View();
         }
 
-        // GET: Purchase/Create
+        public async Task<IActionResult> AddProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var products = await OperationsPro.FindAsync(p => p.Id == id.Value);
+            if (products == null)
+            {
+                return NotFound();
+            }
+            //var model = Mapper.Map<AddInventoryDTO>(products);
+
+            /* Lista para crear productos*/
+            var product = Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true));
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            List<ProductDTO> model = new List<ProductDTO>(product);
+            ViewBag.ProductList = model;
+            return View();
+        }
+
+
+            // GET: Purchase/Create
         public async Task<IActionResult> Create(int? id)
         {
             if (id == null)
@@ -94,7 +121,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Edit/5
-        public IActionResult Edit(int id)
+        public IActionResult Edit()
         {
             return View();
         }
@@ -117,7 +144,7 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Delete/5
-        public IActionResult Delete(int id)
+        public IActionResult Delete()
         {
             return View();
         }
