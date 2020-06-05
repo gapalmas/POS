@@ -103,7 +103,7 @@ namespace App.Web.Data
             if (!context.Product.Any())
             {
                 context.Product.Add(
-                new Product() { Description = "Producto de prueba", Price = 10.5, ClasificationId = 1, CategoryId = 1, InventoryId = 1, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now, ImagePath = "Imagen", PartNumber = "XXXXX" }
+                new Product() { Description = "Producto de prueba", Price = decimal.Parse("10.5"), ClasificationId = 1, CategoryId = 1, InventoryId = 1, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now, ImagePath = "Imagen", PartNumber = "XXXXX" }
                 );
                 context.SaveChanges();
             }
@@ -115,7 +115,6 @@ namespace App.Web.Data
                 );
                 context.SaveChanges();
             }
-
         }
     }
 }

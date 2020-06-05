@@ -94,6 +94,17 @@ namespace App.Core.UseCases
         {
             return Repository.FindAllIncludeAsync(matchitem, criteria);
         }
+
+        public async Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, bool>> matchitem, params Expression<Func<T, object>>[] criteria)
+        {
+            return await Repository.GetAllIncludeAsync(matchitem, criteria);
+        }
+
+        public Task<T> GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return Repository.GetSingle(predicate, includeProperties);
+        }
+
         public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> matchitem)
         {
             return Repository.FindAllAsync(matchitem);

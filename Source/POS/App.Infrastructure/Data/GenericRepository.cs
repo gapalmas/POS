@@ -79,6 +79,29 @@ namespace App.Infrastructure.Data
         {
             return await _dbContext.Set<T>().Where(matchitem).Include(criteria).ToListAsync();
         }
+
+        public Task<T> GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.Where(predicate).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, bool>> matchitem, params Expression<Func<T, object>>[] criteria)
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            foreach (var includeProperty in criteria)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query.Where(matchitem).ToListAsync();
+        }
+
         public IEnumerable<T> FindAllTake(int count)
         {
             return _dbContext.Set<T>().Take(count).ToList();

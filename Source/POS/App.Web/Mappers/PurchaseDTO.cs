@@ -12,6 +12,8 @@ namespace App.Web.Mappers
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
         public DateTime Date { get; set; }
+        public DateTime DateUpdate { get; set; }
+        public int Count { get { return this.Orderitemssales.Count; } }
         public virtual ICollection<Orderitemssales> Orderitemssales { get; set; }
         public virtual ICollection<Ticketorder> Ticketorder { get; set; }
     }

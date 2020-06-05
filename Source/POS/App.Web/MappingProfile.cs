@@ -13,8 +13,10 @@ namespace App.Web
             CreateMap<Product, AddInventoryDTO>();
             CreateMap<Product, RemoveInventoryDTO>();
             CreateMap<Customer, CustomerDTO>();
+            CreateMap<Customer, CustomerListDTO>();
             CreateMap<Supplier, SupplierDTO>();
             CreateMap<Purchaseorder, PurchaseDTO>();
+            CreateMap<Orderitemssales, PurchaseAddProductDTO>();
         }
     }
 }

@@ -1,58 +1,48 @@
-﻿@model App.Web.Mappers.ProductDTO
+﻿@model IEnumerable<App.Web.Mappers.CustomerListDTO>
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Select Customer</h1>
+<h1>Create</h1>
 
-<p>
-    <a asp-action="AddProduct" class="btn btn-success">Add Product</a>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmDialog">Confirm Order</button>
-</p>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <select asp-for="Id" class="form-control" asp-items="@(new SelectList(@ViewBag.ProductList,"Id", "Description"))"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Inventory.Stock" class="control-label"></label>
-                <input asp-for="Inventory.Stock" class="form-control" type="number" value="0" />
-                <span asp-validation-for="Inventory.Stock" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-            <label asp-for="CustomerId" class="control-label"></label>
-            <input asp-for="CustomerId" class="form-control" />
-            <span asp-validation-for="CustomerId" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Date" class="control-label"></label>
-            <input asp-for="Date" class="form-control" />
-            <span asp-validation-for="Date" class="text-danger"></span>
-        </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommercialName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BussinessName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommercialName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BussinessName)
+            </td>
+            <td>
+                <a asp-action="AddOrder" asp-route-id="@item.Id" class="btn btn-outline-warning">Add Order</a>
+                @*@Html.ActionLink("Index", "AddOrder", new { id = item.Id/* id=item.PrimaryKey */ })*@ |
+                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
 }
+    </tbody>
+</table>

@@ -1,36 +1,55 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using App.Core.Entities;
 using App.Core.Interfaces;
 using App.Web.Mappers;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices.ComTypes;
+using App.Web.Models;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class PurchaseController : Controller
     {
         private readonly IMapper Mapper;
         private readonly IOperations<Purchaseorder> OperationsPur;
+        private readonly IOperations<Orderitemssales> OperationsIte;
         private readonly IOperations<Customer> OperationsCus;
         private readonly IOperations<Product> OperationsPro;
 
-        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Customer> operationsCus, IOperations<Product> operationsPro)
+        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Customer> operationsCus, IOperations<Product> operationsPro, IOperations<Orderitemssales> operationsIte)
         {
             Mapper = mapper;
             OperationsPur = operationsPur;
             OperationsCus = operationsCus;
             OperationsPro = operationsPro;
+            OperationsIte = operationsIte;
         }
 
-        // GET: Purchase
         public async Task<IActionResult> Index()
         {
+            //var customers = Mapper.Map<IEnumerable<CustomerListDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
+
+            //if (customers == null)
+            //{
+            //    return NotFound();
+            //}
+            //List<CustomerListDTO> model = new List<CustomerListDTO>(customers);
+            //ViewBag.CustomerList = model;
+
             //int pageSize = 3;
-            return View(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)));
+
+            /*
+             * ToDo: Incomplete method for include Customer or ItemSales on Purchase Order | Missing Add changes on Repository & Operations
+             */
+            return View(Mapper.Map<IEnumerable<PurchaseDTO>>(await OperationsPur.GetAllIncludeAsync(c => c.Status == true, c => c.Orderitemssales, c=> c.Customer )));
             //return View(PaginatedList<PurchaseDTO>.Create(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
@@ -40,61 +59,15 @@ namespace App.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AddProduct(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var products = await OperationsPro.FindAsync(p => p.Id == id.Value);
-            if (products == null)
-            {
-                return NotFound();
-            }
-            //var model = Mapper.Map<AddInventoryDTO>(products);
-
-            /* Lista para crear productos*/
-            var product = Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true));
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            List<ProductDTO> model = new List<ProductDTO>(product);
-            ViewBag.ProductList = model;
-            return View();
-        }
-
-
-            // GET: Purchase/Create
+        // GET: Purchase/Create
         public async Task<IActionResult> Create(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var products = await OperationsPro.FindAsync(p => p.Id == id.Value);
-            if (products == null)
-            {
-                return NotFound();
-            }
-            //var model = Mapper.Map<AddInventoryDTO>(products);
-
-
-
-
-
-
-            /* Lista para crear productos*/
-            var product = Mapper.Map<IEnumerable<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true));
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            List<ProductDTO> model = new List<ProductDTO>(product);
-            ViewBag.ProductList = model;
-            return View();
+            //    if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            var customer = Mapper.Map<IEnumerable<CustomerListDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
+            return View(customer);
         }
 
         // POST: Purchase/Create
@@ -126,6 +99,83 @@ namespace App.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> AddOrder(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+                var purchase = await OperationsPur.CreateAsync(new Purchaseorder
+                {
+                    Date = DateTime.Now,
+                    DateUpdate = DateTime.Now,
+                    Status = true,
+                    CustomerId = (int)id
+                });
+                return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> AddProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Id = id.Value;
+            var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value, c => c.Product));
+            return View(items);
+        }
+
+        public async Task<IActionResult> AddItem(int? Id)
+        {
+            List<Product> items = new List<Product>(await OperationsPro.FindAllAsync(p => p.Status == true));
+            var list = items.Select(p => new SelectListItem
+            {
+                Text = p.Description,
+                Value = p.Id.ToString()                
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a product...)",
+                Value = "0"                
+            });
+
+            var model = new AddItemViewModel
+            {
+                Quantity = 1,
+                Products = list,
+                POId = Id.Value,
+                Price = 1
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddItem(AddItemViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var item = new Orderitemssales { 
+                    Quantity = model.Quantity, 
+                    PurchaseOrderId = model.POId,
+                    Date = DateTime.Now,
+                    DateUpdate = DateTime.Now,
+                    ProductId = model.ProductId,
+                    Status = true,
+                    Price = model.Price };
+
+                await OperationsIte.CreateAsync(item);
+                //await this.orderRepository.AddItemToOrderAsync(model, this.User.Identity.Name);
+                return this.RedirectToAction("Index");
+            }
+
+            return this.View(model);
+        }
+
+
+
         // POST: Purchase/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -143,7 +193,7 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Purchase/Delete/5
+        // GET: Purchase/Delete/5r
         public IActionResult Delete()
         {
             return View();
