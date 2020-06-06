@@ -78,7 +78,7 @@ namespace App.Web.Controllers
             try
             {
                 var Inventory = await OperationsInv.GetAsync(view.Id);
-                Inventory.Stock = (Inventory.Stock + view.Stock);
+                Inventory.Stock += view.Stock;
                 Inventory.DateUpdate = DateTime.Now;
                 await OperationsInv.UpdateAsync(Inventory);
                 var inventoryIo = new Inventoryio 
@@ -197,7 +197,7 @@ namespace App.Web.Controllers
                 }
                 else
                 {
-                    Inventory.Stock = (Inventory.Stock - view.Stock);
+                    Inventory.Stock -= view.Stock;
                     Inventory.DateUpdate = DateTime.Now;
                     await OperationsInv.UpdateAsync(Inventory);
                     var inventoryIo = new Inventoryio

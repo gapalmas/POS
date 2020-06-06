@@ -8,7 +8,6 @@ using App.Core.Entities;
 using App.Core.Interfaces;
 using App.Web.Mappers;
 using AutoMapper;
-using System.Runtime.InteropServices.ComTypes;
 using App.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -45,10 +44,6 @@ namespace App.Web.Controllers
             //ViewBag.CustomerList = model;
 
             //int pageSize = 3;
-
-            /*
-             * ToDo: Incomplete method for include Customer or ItemSales on Purchase Order | Missing Add changes on Repository & Operations
-             */
             return View(Mapper.Map<IEnumerable<PurchaseDTO>>(await OperationsPur.GetAllIncludeAsync(c => c.Status == true, c => c.Orderitemssales, c=> c.Customer )));
             //return View(PaginatedList<PurchaseDTO>.Create(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
@@ -60,9 +55,9 @@ namespace App.Web.Controllers
         }
 
         // GET: Purchase/Create
-        public async Task<IActionResult> Create(int? id)
+        public async Task<IActionResult> Create(/*int? id*/)
         {
-            //    if (id == null)
+            //if (id == null)
             //{
             //    return NotFound();
             //}
@@ -105,26 +100,33 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-            
-                var purchase = await OperationsPur.CreateAsync(new Purchaseorder
-                {
-                    Date = DateTime.Now,
-                    DateUpdate = DateTime.Now,
-                    Status = true,
-                    CustomerId = (int)id
-                });
-                return this.RedirectToAction("Index");
+
+            var purchase = await OperationsPur.CreateAsync(new Purchaseorder
+            {
+                Date = DateTime.Now,
+                DateUpdate = DateTime.Now,
+                Status = true,
+                CustomerId = (int)id
+            });
+            TempData["PoId"] = purchase.Id;
+            return this.RedirectToAction("AddProduct");
         }
 
         public async Task<IActionResult> AddProduct(int? id)
         {
+            if(TempData["PoId"] != null)
+            {
+                id = TempData["PoId"] as int?;
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
+
             ViewBag.Id = id.Value;
             var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value, c => c.Product));
-            return View(items);
+            return View(items.OrderBy(i => i.Product));
         }
 
         public async Task<IActionResult> AddItem(int? Id)
@@ -165,15 +167,22 @@ namespace App.Web.Controllers
                     ProductId = model.ProductId,
                     Status = true,
                     Price = model.Price };
+                var Item = await OperationsIte.FindAsync(i => i.PurchaseOrderId == model.POId && i.ProductId == model.ProductId);
 
-                await OperationsIte.CreateAsync(item);
-                //await this.orderRepository.AddItemToOrderAsync(model, this.User.Identity.Name);
-                return this.RedirectToAction("Index");
+                if (Item == null)
+                {
+                    await OperationsIte.CreateAsync(item);
+                }
+                else 
+                {
+                    Item.Quantity += model.Quantity;
+                    await OperationsIte.UpdateAsync(Item);
+                }
+                TempData["PoId"] = model.POId;
+                return this.RedirectToAction("AddProduct");
             }
-
             return this.View(model);
         }
-
 
 
         // POST: Purchase/Edit/5
@@ -183,8 +192,7 @@ namespace App.Web.Controllers
         {
             try
             {
-                // TODO: Add update logic here
-
+                
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -206,8 +214,6 @@ namespace App.Web.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
-
                 return RedirectToAction(nameof(Index));
             }
             catch
