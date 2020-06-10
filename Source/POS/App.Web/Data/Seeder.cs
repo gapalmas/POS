@@ -115,6 +115,14 @@ namespace App.Web.Data
                 );
                 context.SaveChanges();
             }
+
+            if (!context.Supplier.Any())
+            {
+                context.Supplier.Add(
+                new Supplier() { CommercialName = "Proveedor de prueba", BussinessName = "Proveedor de prueba", Address = "Address", Cp = 32576, Rfc = "PASG840415NY3", DayCredit = 15, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now }
+                );
+                context.SaveChanges();
+            }
         }
     }
 }
