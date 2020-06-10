@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace App.Core.Entities
 {
@@ -11,6 +12,7 @@ namespace App.Core.Entities
         }
 
         public string Description { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public decimal Price { get; set; }
         public string ImagePath { get; set; }
         public string PartNumber { get; set; }

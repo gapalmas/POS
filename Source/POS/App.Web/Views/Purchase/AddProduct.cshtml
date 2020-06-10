@@ -5,10 +5,10 @@
 }
 
 <h2>Create</h2>
-
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 <p>
     <a asp-action="AddItem" asp-route-id="@ViewBag.Id" class="btn btn-success">Add Product</a>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmDialog">Confirm Order</button>
+    <button data-id="@ViewBag.Id" class="btn btn-primary poConfirm" data-toggle="modal" data-target="#confirmDialog">Confirm Order</button>
 </p>
 
 <div class="row">
@@ -21,6 +21,9 @@
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Product.Description)
                             </th>
@@ -39,25 +42,28 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Product.Description)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Price)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Quantity)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Value)
-                                </td>
-                                <td>
-                                    <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
-                                    <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-minus"></i></a>
-                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
+                            </td>
+                            <td>
+                                <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
+                                <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-minus"></i></a>
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -110,13 +116,17 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#MyTable').DataTable();
             // Confirm Order
+            var po_confirm;
+            $('.poConfirm').click((e) => {
+                po_confirm = e.currentTarget.dataset.id;
+            });
             $("#btnYes").click(function () {
-                window.location.href = '/Orders/ConfirmOrder';
+                window.location.href = '/Purchase/ConfirmOrder/' + po_confirm;
             });
             // Delete item
             var item_to_delete;
@@ -124,7 +134,7 @@
                 item_to_delete = e.currentTarget.dataset.id;
             });
             $("#btnYesDelete").click(function () {
-                window.location.href = '/Orders/DeleteItem/' + item_to_delete;
+                window.location.href = '/Purchase/DeleteItem/' + item_to_delete;
             });
         });
     </script>

@@ -10,6 +10,8 @@ namespace App.Web.Mappers
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public bool Delivery { get; set; }
+        public bool Confirm { get; set; }
         public virtual Customer Customer { get; set; }
         public DateTime Date { get; set; }
         public DateTime DateUpdate { get; set; }

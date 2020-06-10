@@ -44,7 +44,7 @@ namespace App.Web.Controllers
             //ViewBag.CustomerList = model;
 
             //int pageSize = 3;
-            return View(Mapper.Map<IEnumerable<PurchaseDTO>>(await OperationsPur.GetAllIncludeAsync(c => c.Status == true, c => c.Orderitemssales, c=> c.Customer )));
+            return View(Mapper.Map<IEnumerable<PurchaseDTO>>(await OperationsPur.GetAllIncludeAsync(c => c.Status == true && c.Confirm == false, c => c.Orderitemssales, c=> c.Customer )));
             //return View(PaginatedList<PurchaseDTO>.Create(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
@@ -79,7 +79,9 @@ namespace App.Web.Controllers
                     CustomerId = view.Id,
                     Date = DateTime.Now,
                     DateUpdate = DateTime.Now,
-                    Status = true
+                    Status = true,
+                    Delivery =false,
+                    Confirm = false
 
                 };
                 await OperationsPur.CreateAsync(purchase);
@@ -125,7 +127,7 @@ namespace App.Web.Controllers
             }
 
             ViewBag.Id = id.Value;
-            var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value, c => c.Product));
+            var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value && c.Status==true , c => c.Product));
             return View(items.OrderBy(i => i.Product));
         }
 
@@ -183,6 +185,50 @@ namespace App.Web.Controllers
             }
             return this.View(model);
         }
+        public async Task<IActionResult> Increase(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderItem = await OperationsIte.FindAsync(i=> i.Id == id.Value);
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            orderItem.Quantity++;
+            if (orderItem.Quantity > 0)
+            {
+                await OperationsIte.UpdateAsync(orderItem);
+            }
+
+            TempData["PoId"] = orderItem.PurchaseOrderId;
+            return this.RedirectToAction("AddProduct");
+        }
+        public async Task<IActionResult> Decrease(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderItem = await OperationsIte.FindAsync(i => i.Id == id.Value);
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            orderItem.Quantity--;
+            if (orderItem.Quantity > 0)
+            {
+                await OperationsIte.UpdateAsync(orderItem);
+            }
+
+            TempData["PoId"] = orderItem.PurchaseOrderId;
+            return this.RedirectToAction("AddProduct");
+        }
 
 
         // POST: Purchase/Edit/5
@@ -201,25 +247,37 @@ namespace App.Web.Controllers
             }
         }
 
-        // GET: Purchase/Delete/5r
-        public IActionResult Delete()
+        public async Task<IActionResult> DeleteItem(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var orderItem = await OperationsIte.FindAsync(i=> i.Id == id.Value);
+            orderItem.Status = false;
+
+            await OperationsIte.UpdateAsync(orderItem);
+
+            TempData["PoId"] = orderItem.PurchaseOrderId;
+            return this.RedirectToAction("AddProduct");
         }
 
-        // POST: Purchase/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> ConfirmOrder(int? id)
         {
-            try
+            if (id == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+            var response = await OperationsPur.FindAsync(p=> p.Id == id.Value);
+            response.Confirm = true;
+            response.DateUpdate = DateTime.Now;
+            if (response.Confirm)
             {
-                return View();
+                await OperationsPur.UpdateAsync(response);
+                return this.RedirectToAction("Index");
             }
+            TempData["PoId"] = response.Id;
+            return this.RedirectToAction("AddProduct");
         }
     }
 }
