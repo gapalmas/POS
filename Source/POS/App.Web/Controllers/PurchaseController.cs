@@ -197,8 +197,9 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-
             orderItem.Quantity++;
+            orderItem.DateUpdate = DateTime.Now;
+            
             if (orderItem.Quantity > 0)
             {
                 await OperationsIte.UpdateAsync(orderItem);
@@ -219,8 +220,9 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-
             orderItem.Quantity--;
+            orderItem.DateUpdate = DateTime.Now;
+            
             if (orderItem.Quantity > 0)
             {
                 await OperationsIte.UpdateAsync(orderItem);
@@ -255,6 +257,7 @@ namespace App.Web.Controllers
             }
             var orderItem = await OperationsIte.FindAsync(i=> i.Id == id.Value);
             orderItem.Status = false;
+            orderItem.DateUpdate = DateTime.Now;
 
             await OperationsIte.UpdateAsync(orderItem);
 
