@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace App.Core.Entities
 {
@@ -8,7 +9,7 @@ namespace App.Core.Entities
         {
             Purchaseorder = new HashSet<Purchaseorder>();
         }
-
+        [Display(Name = "Commercial Name")]
         public string CommercialName { get; set; }
         public string BussinessName { get; set; }
         public string Rfc { get; set; }

@@ -128,7 +128,7 @@ namespace App.Web.Controllers
 
             ViewBag.Id = id.Value;
             var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value && c.Status==true , c => c.Product));
-            return View(items.OrderBy(i => i.Product));
+            return View(items);
         }
 
         public async Task<IActionResult> AddItem(int? Id)

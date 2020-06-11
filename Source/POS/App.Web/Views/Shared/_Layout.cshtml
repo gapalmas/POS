@@ -52,9 +52,17 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="Index">POs</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                                   aria-haspopup="true" aria-expanded="false">POs</a>
+                                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="Index">Purchase Order</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Delivery" asp-action="Index">Deliveries</a>
+                                </div>
                             </li>
+                            @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="Index">Purchase Order</a>
+                            </li>*@
                         }
                     </ul>
                 </div>
