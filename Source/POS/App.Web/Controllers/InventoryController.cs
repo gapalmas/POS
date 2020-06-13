@@ -164,7 +164,7 @@ namespace App.Web.Controllers
             var Inventory = await OperationsInv.GetAsync(id.Value);
             if (Inventory.Stock <= 0)
             {
-                return RedirectToAction(nameof(Index)).WithWarning("Insufficient invetory!", "You need to add more inventory."); ;
+                return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory."); ;
             }
 
 
@@ -193,7 +193,7 @@ namespace App.Web.Controllers
                 var Inventory = await OperationsInv.GetAsync(view.InventoryId);
                 if (view.Stock > Inventory.Stock)
                 {
-                    return RedirectToAction(nameof(Index)).WithWarning("Insufficient invetory!", "You need to add more inventory."); ;
+                    return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory.");
                 }
                 else
                 {

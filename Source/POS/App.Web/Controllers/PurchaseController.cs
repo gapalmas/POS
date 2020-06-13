@@ -11,6 +11,7 @@ using AutoMapper;
 using App.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using App.Web.Extensions.Alerts;
 
 namespace App.Web.Controllers
 {
@@ -22,16 +23,20 @@ namespace App.Web.Controllers
         private readonly IOperations<Orderitemssales> OperationsIte;
         private readonly IOperations<Customer> OperationsCus;
         private readonly IOperations<Product> OperationsPro;
+        private readonly IOperations<Inventory> OperationsInv;
+        private readonly IOperations<Inventoryio> OperationsInvio;
 
-        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Customer> operationsCus, IOperations<Product> operationsPro, IOperations<Orderitemssales> operationsIte)
+        public PurchaseController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Customer> operationsCus, IOperations<Product> operationsPro, IOperations<Orderitemssales> operationsIte, IOperations<Inventory> operationsInv, IOperations<Inventoryio> operationsInvio)
         {
             Mapper = mapper;
             OperationsPur = operationsPur;
             OperationsCus = operationsCus;
             OperationsPro = operationsPro;
             OperationsIte = operationsIte;
+            OperationsInv = operationsInv;
+            OperationsInvio = operationsInvio;
         }
-
+        /*Muestra las ordenes de compras abiertas*/
         public async Task<IActionResult> Index()
         {
             //var customers = Mapper.Map<IEnumerable<CustomerListDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
@@ -48,12 +53,14 @@ namespace App.Web.Controllers
             //return View(PaginatedList<PurchaseDTO>.Create(Mapper.Map<IList<PurchaseDTO>>(await OperationsPur.FindAllIncludeAsync(c => c.Status == true, c => c.Customer)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
+        /*Accion sin asignar*/
         // GET: Purchase/Details/5
         public IActionResult Details()
         {
             return View();
         }
 
+        /*Muestra una lista de clientes para proceder a crear una orden de compra*/
         // GET: Purchase/Create
         public async Task<IActionResult> Create(/*int? id*/)
         {
@@ -65,36 +72,38 @@ namespace App.Web.Controllers
             return View(customer);
         }
 
-        // POST: Purchase/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ProductDTO view)
-        {
-            var customer = await OperationsCus.FindAsync(p => p.Id == view.Id);
+        #region 'Code dummy'
+        //// POST: Purchase/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(ProductDTO view)
+        //{
+        //    var customer = await OperationsCus.FindAsync(p => p.Id == view.Id);
 
-            if (ModelState.IsValid)
-            {
-                var purchase = new Purchaseorder
-                {
-                    CustomerId = view.Id,
-                    Date = DateTime.Now,
-                    DateUpdate = DateTime.Now,
-                    Status = true,
-                    Delivery =false,
-                    Confirm = false
+        //    if (ModelState.IsValid)
+        //    {
+        //        var purchase = new Purchaseorder
+        //        {
+        //            CustomerId = view.Id,
+        //            Date = DateTime.Now,
+        //            DateUpdate = DateTime.Now,
+        //            Status = true,
+        //            Delivery =false,
+        //            Confirm = false
 
-                };
-                await OperationsPur.CreateAsync(purchase);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(view);
-        }
-
-        // GET: Purchase/Edit/5
-        public IActionResult Edit()
-        {
-            return View();
-        }
+        //        };
+        //        await OperationsPur.CreateAsync(purchase);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(view);
+        //}
+        ///*Accion sin asignar*/
+        //// GET: Purchase/Edit/5
+        //public IActionResult Edit()
+        //{
+        //    return View();
+        //}
+        #endregion
 
         public async Task<IActionResult> AddOrder(int? id)
         {
@@ -114,6 +123,7 @@ namespace App.Web.Controllers
             return this.RedirectToAction("AddProduct");
         }
 
+        /*Muestra los productos agregados de la orden de compra*/
         public async Task<IActionResult> AddProduct(int? id)
         {
             if(TempData["PoId"] != null)
@@ -156,11 +166,21 @@ namespace App.Web.Controllers
             return View(model);
         }
 
+        /*
+         * ToDO: Agregar opcion para sumar elementos borrados cuando se hayan seleccionado de nuevo
+         */
         [HttpPost]
         public async Task<IActionResult> AddItem(AddItemViewModel model)
         {
             if (this.ModelState.IsValid)
             {
+                var inventario = await OperationsPro.FindIncludeAsync(p => p.Id == model.ProductId, p=> p.Inventory);
+                if (model.Quantity > inventario.Inventory.Stock)
+                {
+                    TempData["PoId"] = model.POId;
+                    return this.RedirectToAction("AddProduct").WithWarning("Insufficient inventory!", "You need to add more inventory.");
+                }
+
                 var item = new Orderitemssales { 
                     Quantity = model.Quantity, 
                     PurchaseOrderId = model.POId,
@@ -173,13 +193,22 @@ namespace App.Web.Controllers
 
                 if (Item == null)
                 {
-                    await OperationsIte.CreateAsync(item);
+                    Item = await OperationsIte.CreateAsync(item);
                 }
+                //if (Item.Status == false)
+                //{
+                //    Item.Quantity = model.Quantity;
+                //    Item.Status = true;
+                //    await OperationsIte.UpdateAsync(Item);
+                //}
                 else 
                 {
                     Item.Quantity += model.Quantity;
                     await OperationsIte.UpdateAsync(Item);
                 }
+                inventario.Inventory.Stock = inventario.Inventory.Stock - model.Quantity;
+                inventario.Inventory.DateUpdate = DateTime.Now;
+                await OperationsInv.UpdateAsync(inventario.Inventory);
                 TempData["PoId"] = model.POId;
                 return this.RedirectToAction("AddProduct");
             }
@@ -192,10 +221,16 @@ namespace App.Web.Controllers
                 return NotFound();
             }
 
-            var orderItem = await OperationsIte.FindAsync(i=> i.Id == id.Value);
+            var orderItem = await OperationsIte.FindIncludeAsync(i=> i.Id == id.Value, i=> i.Product.Inventory);
             if (orderItem == null)
             {
                 return NotFound();
+            }
+
+            if(orderItem.Quantity + 1 > orderItem.Product.Inventory.Stock)
+            {
+                TempData["PoId"] = orderItem.PurchaseOrderId;
+                return this.RedirectToAction("AddProduct").WithWarning("Insufficient inventory!", "You need to add more inventory.");
             }
             orderItem.Quantity++;
             orderItem.DateUpdate = DateTime.Now;
@@ -204,7 +239,9 @@ namespace App.Web.Controllers
             {
                 await OperationsIte.UpdateAsync(orderItem);
             }
-
+            orderItem.Product.Inventory.Stock--;
+            orderItem.Product.Inventory.DateUpdate = DateTime.Now;
+            await OperationsInv.UpdateAsync(orderItem.Product.Inventory);
             TempData["PoId"] = orderItem.PurchaseOrderId;
             return this.RedirectToAction("AddProduct");
         }
@@ -214,8 +251,7 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-
-            var orderItem = await OperationsIte.FindAsync(i => i.Id == id.Value);
+            var orderItem = await OperationsIte.FindIncludeAsync(i => i.Id == id.Value, i => i.Product.Inventory);
             if (orderItem == null)
             {
                 return NotFound();
@@ -226,13 +262,17 @@ namespace App.Web.Controllers
             if (orderItem.Quantity > 0)
             {
                 await OperationsIte.UpdateAsync(orderItem);
+                orderItem.Product.Inventory.Stock++;
+                orderItem.Product.Inventory.DateUpdate = DateTime.Now;
+                await OperationsInv.UpdateAsync(orderItem.Product.Inventory);
             }
 
             TempData["PoId"] = orderItem.PurchaseOrderId;
             return this.RedirectToAction("AddProduct");
         }
 
-
+        #region 'Code Dummy'
+        /*Codigo sin asigmar*/
         // POST: Purchase/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -248,6 +288,7 @@ namespace App.Web.Controllers
                 return View();
             }
         }
+        #endregion
 
         public async Task<IActionResult> DeleteItem(int? id)
         {
@@ -255,12 +296,11 @@ namespace App.Web.Controllers
             {
                 return NotFound();
             }
-            var orderItem = await OperationsIte.FindAsync(i=> i.Id == id.Value);
+            var orderItem = await OperationsIte.FindIncludeAsync(i => i.Id == id.Value, i => i.Product.Inventory);
             orderItem.Status = false;
             orderItem.DateUpdate = DateTime.Now;
-
+            orderItem.Product.Inventory.Stock = orderItem.Product.Inventory.Stock + orderItem.Quantity;
             await OperationsIte.UpdateAsync(orderItem);
-
             TempData["PoId"] = orderItem.PurchaseOrderId;
             return this.RedirectToAction("AddProduct");
         }
