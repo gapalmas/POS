@@ -14,7 +14,7 @@ namespace App.Web.Models
         public int ProductId { get; set; }
         public int POId { get; set; }
 
-        public decimal Price { get; set; }
+        //public decimal Price { get; set; }
 
         [Range(0.0001, double.MaxValue, ErrorMessage = "The quantiy must be a positive number")]
         public double Quantity { get; set; }

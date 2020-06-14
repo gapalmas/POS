@@ -161,7 +161,7 @@ namespace App.Web.Controllers
                 Quantity = 1,
                 Products = list,
                 POId = Id.Value,
-                Price = 1
+                /*Price = 1*/
             };
             return View(model);
         }
@@ -188,7 +188,7 @@ namespace App.Web.Controllers
                     DateUpdate = DateTime.Now,
                     ProductId = model.ProductId,
                     Status = true,
-                    Price = model.Price };
+                    /*Price = model.Price*/ };
                 var Item = await OperationsIte.FindAsync(i => i.PurchaseOrderId == model.POId && i.ProductId == model.ProductId);
 
                 if (Item == null)
@@ -199,6 +199,7 @@ namespace App.Web.Controllers
                 //{
                 //    Item.Quantity = model.Quantity;
                 //    Item.Status = true;
+                //    Item.DateUpdate= DateTime.Now;
                 //    await OperationsIte.UpdateAsync(Item);
                 //}
                 else 
@@ -300,7 +301,7 @@ namespace App.Web.Controllers
             orderItem.Status = false;
             orderItem.DateUpdate = DateTime.Now;
             orderItem.Product.Inventory.Stock = orderItem.Product.Inventory.Stock + orderItem.Quantity;
-            await OperationsIte.UpdateAsync(orderItem);
+            OperationsIte.Delete(orderItem);
             TempData["PoId"] = orderItem.PurchaseOrderId;
             return this.RedirectToAction("AddProduct");
         }
