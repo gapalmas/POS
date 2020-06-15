@@ -147,7 +147,7 @@ namespace App.Web.Controllers
             var list = items.Select(p => new SelectListItem
             {
                 Text = p.Description,
-                Value = p.Id.ToString()                
+                Value = p.Id.ToString()     
             }).ToList();
 
             list.Insert(0, new SelectListItem
@@ -188,7 +188,7 @@ namespace App.Web.Controllers
                     DateUpdate = DateTime.Now,
                     ProductId = model.ProductId,
                     Status = true,
-                    /*Price = model.Price*/ };
+                    Price = inventario.Price };
                 var Item = await OperationsIte.FindAsync(i => i.PurchaseOrderId == model.POId && i.ProductId == model.ProductId);
 
                 if (Item == null)

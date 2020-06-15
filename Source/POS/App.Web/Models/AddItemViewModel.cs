@@ -20,5 +20,6 @@ namespace App.Web.Models
         public double Quantity { get; set; }
 
         public IEnumerable<SelectListItem> Products { get; set; }
+
     }
 }
