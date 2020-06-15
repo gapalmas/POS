@@ -12,6 +12,7 @@ using App.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using App.Web.Extensions.Alerts;
+using System.Diagnostics.Contracts;
 
 namespace App.Web.Controllers
 {
@@ -322,6 +323,38 @@ namespace App.Web.Controllers
             }
             TempData["PoId"] = response.Id;
             return this.RedirectToAction("AddProduct");
+        }
+
+        public async Task<IActionResult> Confirm(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var response = await OperationsPur.FindAsync(p => p.Id == id.Value);
+            response.Confirm = true;
+            response.DateUpdate = DateTime.Now;
+            if (response.Confirm)
+            {
+                await OperationsPur.UpdateAsync(response);
+            }
+            return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteOrder(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var response = await OperationsPur.FindAsync(p => p.Id == id.Value);
+            response.Status = false;
+            response.DateUpdate = DateTime.Now;
+            if (!response.Status)
+            {
+                await OperationsPur.UpdateAsync(response);
+            }
+            return this.RedirectToAction("Index");
         }
     }
 }

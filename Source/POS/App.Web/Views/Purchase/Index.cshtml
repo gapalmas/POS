@@ -15,17 +15,6 @@
     </p>
 }
 
-@*<form method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label class="control-label">Customer</label>
-            <select class="form-control" asp-items="@(new SelectList(@ViewBag.CustomerList,"Id", "CommercialName"))"></select>
-            <a asp-action="Create" asp-route-id="@(new SelectList(@ViewBag.CustomerList,"Id"))" class="btn btn-outline-primary">Add New</a></div>
-    </form>*@
-
-
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -63,31 +52,33 @@
 
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Customer.BussinessName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateUpdate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Orderitemssales.Count)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Value)
-                            </td>
-                            <td>
-                                <a asp-action="AddProduct" asp-route-id="@item.Id" class="btn btn-outline-primary">Add Product</a>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Confirm</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Customer.BussinessName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateUpdate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Orderitemssales.Count)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                <td>
+                                    <a asp-action="AddProduct" asp-route-id="@item.Id" class="btn btn-outline-primary">Add Product</a>
+                                    @*<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Confirm</a>
+        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>*@
+                                    <button data-id="@item.Id" class="btn btn-outline-success poConfirm" data-toggle="modal" data-target="#confirmDialog">Confirm Order</button>
+                                    <button data-id="@item.Id" class="btn btn-outline-danger deleteOrder" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+                                </td>
+                            </tr>
                         }
 
                     </tbody>
@@ -97,11 +88,72 @@
     </div>
 </div>
 
+
+<!-- Confirm Order-->
+<div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Order</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to confirm the order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="btnYes">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Delete Item-->
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Item</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to delete the order?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#ProductsTable').DataTable();
+            // Confirm Order
+            var po_confirm;
+            $('.poConfirm').click((e) => {
+                po_confirm = e.currentTarget.dataset.id;
+            });
+            $("#btnYes").click(function () {
+                window.location.href = '/Purchase/Confirm/' + po_confirm;
+            });
+            // Delete item
+            var item_to_delete;
+            $('.deleteOrder').click((e) => {
+                order_to_delete = e.currentTarget.dataset.id;
+            });
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Purchase/DeleteOrder/' + order_to_delete;
+            });
         });
     </script>
 }
