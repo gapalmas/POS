@@ -100,9 +100,9 @@ namespace App.Core.UseCases
             return await Repository.GetAllIncludeAsync(matchitem, criteria);
         }
 
-        public Task<T> GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            return Repository.GetSingle(predicate, includeProperties);
+            return Repository.GetSingleAsync(predicate, includeProperties);
         }
 
         public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> matchitem)

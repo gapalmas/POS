@@ -80,7 +80,7 @@ namespace App.Infrastructure.Data
             return await _dbContext.Set<T>().Where(matchitem).Include(criteria).ToListAsync();
         }
 
-        public Task<T> GetSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _dbContext.Set<T>();
             foreach (var includeProperty in includeProperties)

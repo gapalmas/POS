@@ -315,7 +315,6 @@ namespace App.Web.Controllers
             }
             var response = await OperationsPur.FindAsync(p=> p.Id == id.Value);
             response.Confirm = true;
-            response.DateUpdate = DateTime.Now;
             if (response.Confirm)
             {
                 await OperationsPur.UpdateAsync(response);
