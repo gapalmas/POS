@@ -104,6 +104,9 @@ namespace App.Web
             /*DI for Order items sales*/
             services.AddScoped<IOperations<Orderitemssales>, ManageOperations<Orderitemssales>>();
             services.AddScoped<IRepository<Orderitemssales>, GenericRepository<Orderitemssales>>();
+            /*DI for Category*/
+            services.AddScoped<IOperations<Category>, ManageOperations<Category>>();
+            services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
 
 
             //services.AddScoped<IProductRepository, ProductRepository>();

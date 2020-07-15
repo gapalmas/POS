@@ -30,6 +30,7 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="wwwroot\img\products\" />
+    <Folder Include="wwwroot\content\" />
   </ItemGroup>
 
 
@@ -71,12 +72,7 @@
 
 
   <ItemGroup>
-    <Reference Include="App.Core">
-      <HintPath>..\App.Infrastructure\bin\Debug\netcoreapp2.2\App.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="App.Infrastructure">
-      <HintPath>..\App.Infrastructure\bin\Debug\netcoreapp2.2\App.Infrastructure.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\App.Infrastructure\App.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

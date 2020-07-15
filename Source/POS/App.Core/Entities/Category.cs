@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace App.Core.Entities
 {
@@ -8,7 +9,7 @@ namespace App.Core.Entities
         {
             Product = new HashSet<Product>();
         }
-
+        [Display(Name = "Name")]
         public string Description { get; set; }
         public virtual ICollection<Product> Product { get; set; }
     }
