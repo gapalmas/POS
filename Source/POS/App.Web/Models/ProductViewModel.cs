@@ -1,5 +1,6 @@
 ﻿using App.Core.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,5 +13,7 @@ namespace App.Web.Models
     {
         [Display(Name ="Image")]
         public IFormFile ImageFile { get; set; }
+
+        public IEnumerable<SelectListItem> Categories { get; set; }
     }
 }

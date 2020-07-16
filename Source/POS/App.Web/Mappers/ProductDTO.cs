@@ -18,6 +18,7 @@ namespace App.Web.Mappers
         public int CategoryId { get; set; }
         public int ClasificationId { get; set; }
         public int InventoryId { get; set; }
+        public virtual Category Category { get; set; }
         public virtual Inventory Inventory { get; set; }
     }
 }

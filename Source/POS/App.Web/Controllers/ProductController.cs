@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using App.Web.Helpers;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace App.Web.Controllers
 {
@@ -21,25 +22,47 @@ namespace App.Web.Controllers
         private readonly IMapper Mapper;
         private readonly IOperations<Product> OperationsPro;
         private readonly IOperations<Inventory> OperationsInv;
+        private readonly IOperations<Category> OperationsCat;
 
-        public ProductController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv)
+        public ProductController(IMapper Mapper, IOperations<Product> OperationsPro, IOperations<Inventory> OperationsInv, IOperations<Category> OperationsCat)
         {
             this.Mapper = Mapper;
             this.OperationsPro = OperationsPro;
             this.OperationsInv = OperationsInv;
+            this.OperationsCat = OperationsCat;
         }
 
         public async Task<IActionResult> Index()
         {
-
-            return View(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
+            //return View(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)));
+            return View(Mapper.Map<IList<ProductDTO>>(await OperationsPro.GetAllIncludeAsync(p => p.Status == true, c =>  c.Category )));
             //int pageSize = 3;
             //return View(PaginatedList<ProductDTO>.Create(Mapper.Map<IList<ProductDTO>>(await OperationsPro.FindAllAsync(c => c.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            List<Category> items = new List<Category>(await OperationsCat.FindAllAsync(p => p.Status == true));
+            var list = items.Select(p => new SelectListItem
+            {
+                Text = p.Description,
+                Value = p.Id.ToString()
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a category...)",
+                Value = "0"
+            });
+
+            var model = new ProductViewModel
+            {
+                Categories = list
+                /*Price = 1*/
+            };
+            return View(model);
+
+            //return View();
         }
 
         //POST: Products/Create
@@ -86,7 +109,7 @@ namespace App.Web.Controllers
                 Price = view.Price,
                 Status = true,
                 ClasificationId = 1,
-                CategoryId = 1,
+                CategoryId = view.CategoryId,
                 InventoryId = InventoryId()
             };
         }
@@ -120,6 +143,20 @@ namespace App.Web.Controllers
 
         private ProductViewModel ToProductViewModel(Product product)
         {
+            List<Category> items = new List<Category>(OperationsCat.FindAll(p => p.Status == true));
+            
+            var list = items.Select(p => new SelectListItem
+            {
+                Text = p.Description,
+                Value = p.Id.ToString()
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Select a category...)",
+                Value = "0"
+            });
+
             return new ProductViewModel
             {
                 Id = product.Id,
@@ -127,7 +164,8 @@ namespace App.Web.Controllers
                 InventoryId = product.InventoryId,
                 ImagePath = product.ImagePath,
                 PartNumber = product.PartNumber,
-                Price = product.Price
+                Price = product.Price,
+                Categories = list
             };
         }
 
