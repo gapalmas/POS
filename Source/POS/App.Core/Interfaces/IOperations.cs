@@ -47,6 +47,7 @@ namespace App.Core.Interfaces
         Task<T> FindIncludeAsync(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, bool>> matchitem, params Expression<Func<T, object>>[] criteria);
+        Task<IEnumerable<T>> FindAllWhereAsync(Expression<Func<T, bool>> matchitem);
 
         #endregion
     }

@@ -78,6 +78,10 @@ namespace App.Core.UseCases
         {
             return Repository.FindAllWhere(matchitem);
         }
+        public Task<IEnumerable<T>> FindAllWhereAsync(Expression<Func<T, bool>> matchitem)
+        {
+            return Repository.FindAllWhereAsync(matchitem);
+        }
         public IEnumerable<T> FindAllWhereTake(Expression<Func<T, bool>> matchitem, int count)
         {
             return Repository.FindAllWhereTake(matchitem, count);
