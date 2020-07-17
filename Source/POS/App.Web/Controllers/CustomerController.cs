@@ -24,10 +24,10 @@ namespace App.Web.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index(int? pageNumber)
+        public async Task<IActionResult> Index(/*int? pageNumber*/)
         {
-            int pageSize = 3;
-            return View(PaginatedList<CustomerDTO>.Create(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(p => p.Status == true)).AsQueryable(), pageNumber ?? 1, pageSize));
+            //int pageSize = 3;
+            return View(Mapper.Map<IList<CustomerDTO>>(await OperationsCus.FindAllAsync(p => p.Status == true)));
         }
 
         // GET: Customer/Create
