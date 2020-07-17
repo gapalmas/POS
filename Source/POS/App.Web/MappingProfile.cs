@@ -18,6 +18,7 @@ namespace App.Web
             CreateMap<Purchaseorder, PurchaseDTO>();
             CreateMap<Orderitemssales, PurchaseAddProductDTO>();
             CreateMap<Category, CategoryDTO>();
+            CreateMap<Inventory, InventoryReportDTO>();
         }
     }
 }
