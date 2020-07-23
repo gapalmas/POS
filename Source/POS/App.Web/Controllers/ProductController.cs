@@ -223,6 +223,7 @@ namespace App.Web.Controllers
                     product.ImagePath = path;
                     product.PartNumber = view.PartNumber;
                     product.DateUpdate = DateTime.Now;
+                    product.CategoryId = view.CategoryId;
 
                     //var products = ToProduct(view, path);
                     await OperationsPro.UpdateAsync(product);
