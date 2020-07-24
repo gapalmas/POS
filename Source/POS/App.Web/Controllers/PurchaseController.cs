@@ -229,7 +229,7 @@ namespace App.Web.Controllers
                 return NotFound();
             }
 
-            if(orderItem.Quantity + 1 > orderItem.Product.Inventory.Stock)
+            if( 1 > orderItem.Product.Inventory.Stock)
             {
                 TempData["PoId"] = orderItem.PurchaseOrderId;
                 return this.RedirectToAction("AddProduct").WithWarning("Insufficient inventory!", "You need to add more inventory.");
