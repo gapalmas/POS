@@ -15,12 +15,14 @@ namespace App.Web.Controllers
         private readonly IMapper Mapper;
         private readonly IOperations<Purchaseorder> OperationsPur;
         private readonly IOperations<Product> OperationsPro;
+        private readonly IOperations<Inventoryio> OperationsIo;
 
-        public DeliveryController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Product> operationsPro)
+        public DeliveryController(IMapper mapper, IOperations<Purchaseorder> operationsPur, IOperations<Product> operationsPro, IOperations<Inventoryio> operationsIo)
         {
             Mapper = mapper;
             OperationsPur = operationsPur;
             OperationsPro = operationsPro;
+            OperationsIo = operationsIo;
         }
         public async Task<IActionResult> Index()
         {
@@ -38,7 +40,9 @@ namespace App.Web.Controllers
             foreach (var item in response.Orderitemssales)
             {
                 var Inv = await OperationsPro.FindIncludeAsync(i=> i.Id == item.ProductId, i => i.Inventory);
-                Inv.Inventory.Stock += item.Quantity;
+                await OperationsIo.CreateAsync(
+                    new Inventoryio() { Date = DateTime.Now, DateUpdate = DateTime.Now, InventoryId = Inv.InventoryId, Price = item.Price, Quantity = item.Quantity, Status = false }
+                    );
             }
 
             response.Delivery = true;
