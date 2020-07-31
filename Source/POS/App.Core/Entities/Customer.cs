@@ -16,6 +16,7 @@ namespace App.Core.Entities
         public decimal Cp { get; set; }
         public string Address { get; set; }
         public int DayCredit { get; set; }
+        public double Percent { get; set; }
         public virtual ICollection<Purchaseorder> Purchaseorder { get; set; }
     }
 }

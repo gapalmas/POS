@@ -14,5 +14,6 @@ namespace App.Web.Mappers
         public decimal Cp { get; set; }
         public string Address { get; set; }
         public int DayCredit { get; set; }
+        public int Percent { get; set; }
     }
 }

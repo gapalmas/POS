@@ -49,6 +49,7 @@ namespace App.Web.Controllers
                     CommercialName = view.CommercialName, 
                     Cp = view.Cp, 
                     DayCredit = view.DayCredit, 
+                    Percent = view.Percent,
                     Rfc = view.Rfc, 
                     Date = DateTime.Now, 
                     DateUpdate = DateTime.Now, 
@@ -93,6 +94,7 @@ namespace App.Web.Controllers
                     customer.BussinessName = view.BussinessName;
                     customer.CommercialName = view.CommercialName;
                     customer.DayCredit = view.DayCredit;
+                    customer.Percent = view.Percent;
                     customer.Cp = view.Cp;
                     customer.Address = view.Address;
                     customer.Rfc = view.Rfc;
