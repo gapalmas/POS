@@ -149,76 +149,76 @@ namespace App.Web.Controllers
             return View(view);
         }
 
-        // GET: Inventory/Edit/5
-        //public async Task<IActionResult> Remove(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var products = await OperationsPro.FindAsync(p => p.InventoryId == id.Value);
-        //    if (products == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var Inventory = await OperationsInv.GetAsync(id.Value);
-        //    if (Inventory.Stock <= 0)
-        //    {
-        //        return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory."); ;
-        //    }
+        //GET: Inventory/Edit/5
+        public async Task<IActionResult> Remove(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var products = await OperationsPro.FindAsync(p => p.InventoryId == id.Value);
+            if (products == null)
+            {
+                return NotFound();
+            }
+            var Inventory = await OperationsInv.GetAsync(id.Value);
+            if (Inventory.Stock <= 0)
+            {
+                return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory."); ;
+            }
 
 
-        //        var model = Mapper.Map<RemoveInventoryDTO>(products);
+            var model = Mapper.Map<RemoveInventoryDTO>(products);
 
-            
-        //    /* Lista para crear productos*/
-        //    var customer = Mapper.Map<IEnumerable<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
 
-        //    if (customer == null)
-        //    {
-        //        return NotFound();
-        //    }
+            /* Lista para crear productos*/
+            var customer = Mapper.Map<IEnumerable<CustomerDTO>>(await OperationsCus.FindAllAsync(c => c.Status == true));
 
-        //    List<CustomerDTO> Customers = new List<CustomerDTO>(customer);
-        //    ViewBag.CustomerList = Customers;
-        //    return View(model);
-        //}
+            if (customer == null)
+            {
+                return NotFound();
+            }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Remove(RemoveInventoryDTO view)
-        //{
-        //    try
-        //    {
-        //        var Inventory = await OperationsInv.GetAsync(view.InventoryId);
-        //        if (view.Stock > Inventory.Stock)
-        //        {
-        //            return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory.");
-        //        }
-        //        else
-        //        {
-        //            Inventory.Stock -= view.Stock;
-        //            Inventory.DateUpdate = DateTime.Now;
-        //            await OperationsInv.UpdateAsync(Inventory);
-        //            var inventoryIo = new Inventoryio
-        //            {
-        //                Quantity = view.Stock,
-        //                Date = DateTime.Now,
-        //                DateUpdate = DateTime.Now,
-        //                Status = false,
-        //                InventoryId = view.InventoryId,
-        //                Price = view.Price
-        //            };
-        //            await OperationsInvIo.CreateAsync(inventoryIo);
-        //            var po = await OperationPur.CreateAsync(new Purchaseorder { Status = true, CustomerId = view.CustomerId, Date = DateTime.Now, DateUpdate = DateTime.Now });
-        //            var itempo = await OperationIte.CreateAsync(new Orderitemssales { Status = true, Quantity = view.Stock, ProductId = view.Id, PurchaseOrderId = po.Id, Price = view.Price, Date = DateTime.Now, DateUpdate = DateTime.Now });
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            List<CustomerDTO> Customers = new List<CustomerDTO>(customer);
+            ViewBag.CustomerList = Customers;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Remove(RemoveInventoryDTO view)
+        {
+            try
+            {
+                var Inventory = await OperationsInv.GetAsync(view.InventoryId);
+                if (view.Stock > Inventory.Stock)
+                {
+                    return RedirectToAction(nameof(Index)).WithWarning("Insufficient inventory!", "You need to add more inventory.");
+                }
+                else
+                {
+                    Inventory.Stock -= view.Stock;
+                    Inventory.DateUpdate = DateTime.Now;
+                    await OperationsInv.UpdateAsync(Inventory);
+                    var inventoryIo = new Inventoryio
+                    {
+                        Quantity = view.Stock,
+                        Date = DateTime.Now,
+                        DateUpdate = DateTime.Now,
+                        Status = false,
+                        InventoryId = view.InventoryId,
+                        Price = view.Price
+                    };
+                    await OperationsInvIo.CreateAsync(inventoryIo);
+                    var po = await OperationPur.CreateAsync(new Purchaseorder { Status = true, CustomerId = view.CustomerId, Date = DateTime.Now, DateUpdate = DateTime.Now });
+                    var itempo = await OperationIte.CreateAsync(new Orderitemssales { Status = true, Quantity = view.Stock, ProductId = view.Id, PurchaseOrderId = po.Id, Price = view.Price, Date = DateTime.Now, DateUpdate = DateTime.Now });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

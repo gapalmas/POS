@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using App.Core.Entities;
 using App.Core.Interfaces;
+using App.Web.Extensions.Alerts;
 using App.Web.Mappers;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,10 @@ namespace App.Web.Controllers
                     Status = true
 
                 };
+                if (await OperationsCus.ExistsAsync(c=> c.Rfc == customer.Rfc))
+                {
+                    return RedirectToAction(nameof(Index)).WithWarning("Entity Exist!", "You need verify your data.");
+                }
                 await OperationsCus.CreateAsync(customer);
                 return RedirectToAction(nameof(Index));
             }
