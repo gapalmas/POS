@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using App.Web.Extensions.Alerts;
 using System.Diagnostics.Contracts;
+using App.Infrastructure.Migrations;
 
 namespace App.Web.Controllers
 {
@@ -120,7 +121,9 @@ namespace App.Web.Controllers
                 Status = true,
                 CustomerId = (int)id
             });
+            var client = await OperationsCus.FindAsync(c => c.Id == (int)id);
             TempData["PoId"] = purchase.Id;
+            TempData["Percent"] = client.Percent;
             return this.RedirectToAction("AddProduct");
         }
 
@@ -138,12 +141,27 @@ namespace App.Web.Controllers
             }
 
             ViewBag.Id = id.Value;
-            var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(await OperationsIte.FindAllIncludeAsync(c => c.PurchaseOrderId == id.Value && c.Status==true , c => c.Product));
+            var query = await OperationsIte.GetAllIncludeAsync(c => c.PurchaseOrderId == id.Value && c.Status == true, c => c.Product, c => c.PurchaseOrder.Customer);
+            foreach (var item in query)
+            {
+                ViewBag.Percent = item.PurchaseOrder.Customer.Percent;
+            }
+            
+            var items = Mapper.Map<IEnumerable<PurchaseAddProductDTO>>(query);
+            
+
             return View(items);
         }
 
         public async Task<IActionResult> AddItem(int? Id)
         {
+            var query = await OperationsPur.GetAllIncludeAsync(p => p.Id == Id.Value, p => p.Customer);
+            double percent = 0;
+            foreach (var item in query)
+            {
+                percent = item.Customer.Percent;
+            }
+
             List<Product> items = new List<Product>(await OperationsPro.FindAllAsync(p => p.Status == true));
             var list = items.Select(p => new SelectListItem
             {
@@ -162,6 +180,7 @@ namespace App.Web.Controllers
                 Quantity = 1,
                 Products = list,
                 POId = Id.Value,
+                Percent = percent
                 /*Price = 1*/
             };
             return View(model);
@@ -189,7 +208,7 @@ namespace App.Web.Controllers
                     DateUpdate = DateTime.Now,
                     ProductId = model.ProductId,
                     Status = true,
-                    Price = inventario.Price };
+                    Price = inventario.Price * (decimal)(1 + (model.Percent / 100 ))}; /*Cambiar el precio base por el precio de % de customer*/
                 var Item = await OperationsIte.FindAsync(i => i.PurchaseOrderId == model.POId && i.ProductId == model.ProductId);
 
                 if (Item == null)

@@ -18,6 +18,7 @@ namespace App.Web.Models
 
         [Range(0.0001, double.MaxValue, ErrorMessage = "The quantiy must be a positive number")]
         public double Quantity { get; set; }
+        public double Percent { get; set; }
 
         public IEnumerable<SelectListItem> Products { get; set; }
 

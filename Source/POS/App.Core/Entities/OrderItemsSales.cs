@@ -10,6 +10,7 @@ namespace App.Core.Entities
         public double Quantity { get; set; }
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Price { get; set; }
+        public double Percent { get { return 1 + (this.PurchaseOrder.Customer.Percent / 100); } }
         public virtual Product Product { get; set; }
         public virtual Purchaseorder PurchaseOrder { get; set; }
 
