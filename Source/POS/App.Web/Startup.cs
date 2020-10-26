@@ -63,8 +63,8 @@ namespace App.Web
 
             services.AddDbContext<DataContext>(cfg =>
             {
-                cfg.UseMySql(this.Configuration.GetConnectionString("MySQLConnection"));
-                //cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLServerConnection"));
+                //cfg.UseMySql(this.Configuration.GetConnectionString("MySQLConnection"));
+                cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLServerConnection"));
             });
 
             services.AddAuthentication().AddCookie().AddJwtBearer(cfg =>
