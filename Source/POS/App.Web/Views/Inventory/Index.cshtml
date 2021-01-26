@@ -1,0 +1,110 @@
+﻿@model IEnumerable<App.Web.DTOs.InventoryDTO>
+@*@model PaginatedList<App.Web.Mappers.InventoryDTO>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@*<h1>Inventory</h1>*@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+<br />
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+<h1>Inventory</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"></h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="InventoryTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Stock
+                            </th>
+                            <th>
+                                StockMin
+                            </th>
+                            <th>
+                                StockMax
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                            <th>
+                                Register
+                            </th>
+                            <th>
+                                Update
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.InventoryId)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Inventory.Stock)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Inventory.StockMin)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Inventory.StockMax)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Inventory.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Inventory.DateUpdate)
+                            </td>
+                            @*<td>
+                                @Html.DisplayFor(modelItem => item.Inventory.Location)
+                            </td>*@
+                            <td>
+                                <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add</a>
+                                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
+                                @*<a asp-action="Remove" asp-route-id="@item.InventoryId" class="btn btn-outline-danger">Remove</a>*@
+                            </td>
+                        </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#InventoryTable').DataTable();
+        });
+    </script>
+}

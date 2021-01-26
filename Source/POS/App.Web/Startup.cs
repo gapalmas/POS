@@ -71,16 +71,30 @@ namespace App.Web
 
             /*Startup*/
             /*DI for Product*/
-
-
-            services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
             services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
+            services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+            /*DI for Inventory*/
+            services.AddScoped<IOperations<Inventory>, ManageOperations<Inventory>>();
+            services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
+            /*DI for Customer*/
+            services.AddScoped<IOperations<Customer>, ManageOperations<Customer>>();
+            services.AddScoped<IRepository<Customer>, GenericRepository<Customer>>();
+            /*DI for Supplier*/
+            services.AddScoped<IOperations<Supplier>, ManageOperations<Supplier>>();
+            services.AddScoped<IRepository<Supplier>, GenericRepository<Supplier>>();
+            /*DI for InventoryIO*/
+            services.AddScoped<IOperations<Inventoryio>, ManageOperations<Inventoryio>>();
+            services.AddScoped<IRepository<Inventoryio>, GenericRepository<Inventoryio>>();
+            /*DI for Purchase*/
+            services.AddScoped<IOperations<Purchaseorder>, ManageOperations<Purchaseorder>>();
+            services.AddScoped<IRepository<Purchaseorder>, GenericRepository<Purchaseorder>>();
+            /*DI for Order items sales*/
+            services.AddScoped<IOperations<Orderitemssales>, ManageOperations<Orderitemssales>>();
+            services.AddScoped<IRepository<Orderitemssales>, GenericRepository<Orderitemssales>>();
+            /*DI for Category*/
+            services.AddScoped<IOperations<Category>, ManageOperations<Category>>();
+            services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
 
-            ///*DI for Log*/
-            //services.AddScoped<IRepository<Log>, GenericRepository<Log>>();
-            //services.AddScoped<IOperations<Log>, ManageOperations<Log>>();
-
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUserHelper, UserHelper>();
 
