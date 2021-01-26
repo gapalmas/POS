@@ -25,6 +25,12 @@ namespace App.Web.Controllers
             this.userHelper = userHelper;
             this.configuration = configuration;
         }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)

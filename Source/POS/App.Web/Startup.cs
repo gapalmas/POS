@@ -1,4 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using App.Core.Entities;
+using App.Core.Interfaces;
+using App.Core.UseCases;
+using App.Infrastructure.Data;
+using App.Web.Data;
+using App.Web.Helpers;
+using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -6,17 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using App.Core.Entities;
-using App.Infrastructure.Data;
-using App.Web.Helpers;
-using App.Web.Data;
-using AutoMapper;
-using System;
-using App.Core.Interfaces;
-using App.Core.UseCases;
-using App.Web.Features.Alerts;
 
 namespace App.Web
 {
@@ -32,18 +31,6 @@ namespace App.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            // //Auto Mapper Configurations
-            //var mappingConfig = new MapperConfiguration(mc =>
-            //{
-            //    mc.AddProfile(new MappingProfile());
-            //});
-
-            // IMapper mapper = mappingConfig.CreateMapper();
-            // services.AddSingleton(mapper);
-
-            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
             services.AddAutoMapper(typeof(MappingProfile));
 
             services.AddIdentity<User, IdentityRole>(cfg =>
@@ -63,8 +50,8 @@ namespace App.Web
 
             services.AddDbContext<DataContext>(cfg =>
             {
-                //cfg.UseMySql(this.Configuration.GetConnectionString("MySQLConnection"));
-                cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLServerConnection"));
+                cfg.UseMySql(this.Configuration.GetConnectionString("MySQLConnection"));
+                //cfg.UseSqlServer(this.Configuration.GetConnectionString("SQLServerConnection"));
             });
 
             services.AddAuthentication().AddCookie().AddJwtBearer(cfg =>
@@ -84,32 +71,16 @@ namespace App.Web
 
             /*Startup*/
             /*DI for Product*/
-            services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
+
+
             services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
-            /*DI for Inventory*/
-            services.AddScoped<IOperations<Inventory>, ManageOperations<Inventory>>();
-            services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
-            /*DI for Customer*/
-            services.AddScoped<IOperations<Customer>, ManageOperations<Customer>>();
-            services.AddScoped<IRepository<Customer>, GenericRepository<Customer>>();
-            /*DI for Supplier*/
-            services.AddScoped<IOperations<Supplier>, ManageOperations<Supplier>>();
-            services.AddScoped<IRepository<Supplier>, GenericRepository<Supplier>>();
-            /*DI for InventoryIO*/
-            services.AddScoped<IOperations<Inventoryio>, ManageOperations<Inventoryio>>();
-            services.AddScoped<IRepository<Inventoryio>, GenericRepository<Inventoryio>>();
-            /*DI for Purchase*/
-            services.AddScoped<IOperations<Purchaseorder>, ManageOperations<Purchaseorder>>();
-            services.AddScoped<IRepository<Purchaseorder>, GenericRepository<Purchaseorder>>();
-            /*DI for Order items sales*/
-            services.AddScoped<IOperations<Orderitemssales>, ManageOperations<Orderitemssales>>();
-            services.AddScoped<IRepository<Orderitemssales>, GenericRepository<Orderitemssales>>();
-            /*DI for Category*/
-            services.AddScoped<IOperations<Category>, ManageOperations<Category>>();
-            services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
+            services.AddScoped<IOperations<Product>, ManageOperations<Product>>();
 
+            ///*DI for Log*/
+            //services.AddScoped<IRepository<Log>, GenericRepository<Log>>();
+            //services.AddScoped<IOperations<Log>, ManageOperations<Log>>();
 
-            //services.AddScoped<IProductRepository, ProductRepository>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IUserHelper, UserHelper>();
 
@@ -131,17 +102,21 @@ namespace App.Web
 
             //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddSessionStateTempDataProvider();
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+            //    .AddSessionStateTempDataProvider();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSession();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {
@@ -149,22 +124,52 @@ namespace App.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+
+            app.UseRouting();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseSession();
-
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
+
+        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        //{
+        //    if (env.IsDevelopment())
+        //    {
+        //        app.UseDeveloperExceptionPage();
+        //    }
+        //    else
+        //    {
+        //        app.UseExceptionHandler("/Home/Error");
+        //        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        //        app.UseHsts();
+        //    }
+
+        //    app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+        //    app.UseHttpsRedirection();
+        //    app.UseStaticFiles();
+        //    app.UseCookiePolicy();
+        //    app.UseAuthentication();
+
+        //    app.UseSession();
+
+        //    app.UseMvc(routes =>
+        //    {
+        //        routes.MapRoute(
+        //            name: "default",
+        //            template: "{controller=Home}/{action=Index}/{id?}");
+        //    });
+        //}
     }
 }

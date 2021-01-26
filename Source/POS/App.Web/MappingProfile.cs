@@ -1,5 +1,5 @@
 ﻿using App.Core.Entities;
-using App.Web.Mappers;
+using App.Web.DTOs;
 using AutoMapper;
 
 namespace App.Web

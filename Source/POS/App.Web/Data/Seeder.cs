@@ -24,7 +24,7 @@ namespace App.Web.Data
         public async Task SeederAsync()
         {
             await context.Database.EnsureCreatedAsync();
-                                                  
+
             /*Valida que los roles existan*/
             await this.userHelper.CheckRoleAsync("Admin");
             await this.userHelper.CheckRoleAsync("Customer");
@@ -111,7 +111,7 @@ namespace App.Web.Data
             if (!context.Customer.Any())
             {
                 context.Customer.Add(
-                new Customer() { CommercialName = "Cliente de prueba", BussinessName = "Cliente de prueba", Address = "Address", Cp= 32576, Rfc = "PASG840415NY3" , DayCredit = 15, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now }
+                new Customer() { CommercialName = "Cliente de prueba", BussinessName = "Cliente de prueba", Address = "Address", Cp = 32576, Rfc = "PASG840415NY3", DayCredit = 15, Status = true, Date = DateTime.Now, DateUpdate = DateTime.Now }
                 );
                 context.SaveChanges();
             }
