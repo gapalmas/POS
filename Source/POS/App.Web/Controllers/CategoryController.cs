@@ -6,12 +6,14 @@ using App.Core.Entities;
 using App.Core.Interfaces;
 using App.Web.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IMapper Mapper;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Core.Entities;
 using App.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class UnitController : Controller
     {
         private readonly DataContext _context;

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 <h1>Edit</h1>
 
 <h4>Company</h4>
@@ -63,4 +63,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+@await Html.PartialAsync("_WrapperEnd")

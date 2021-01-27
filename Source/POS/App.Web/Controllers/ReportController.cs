@@ -6,11 +6,13 @@ using App.Core.Entities;
 using App.Core.Interfaces;
 using App.Web.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Web.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         private readonly IMapper Mapper;

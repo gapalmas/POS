@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Remove";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 <h1>Remove</h1>
 
 <hr />
@@ -50,3 +50,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@await Html.PartialAsync("_WrapperEnd")

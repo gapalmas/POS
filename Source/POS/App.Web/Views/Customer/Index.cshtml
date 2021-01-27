@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Customers";
 }
+@await Html.PartialAsync("_WrapperInit")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 <h1>Customers</h1>
 
@@ -112,3 +113,4 @@
         });
     </script>
 }
+@await Html.PartialAsync("_WrapperEnd")

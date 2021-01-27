@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@await Html.PartialAsync("_WrapperInit")
 
 @*<h1>Edit</h1>*@
 
@@ -46,3 +47,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+@await Html.PartialAsync("_WrapperEnd")

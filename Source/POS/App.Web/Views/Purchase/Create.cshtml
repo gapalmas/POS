@@ -3,12 +3,12 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 <h1>Create</h1>
 
 @*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+        <a asp-action="Create">Create New</a>
+    </p>*@
 <table class="table">
     <thead>
         <tr>
@@ -25,24 +25,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CommercialName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BussinessName)
-            </td>
-            <td>
-                <a asp-action="AddOrder" asp-route-id="@item.Id" class="btn btn-outline-warning">Add Order</a>
-                @*@Html.ActionLink("Index", "AddOrder", new { id = item.Id/* id=item.PrimaryKey */ })*@ |
-                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommercialName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BussinessName)
+                </td>
+                <td>
+                    <a asp-action="AddOrder" asp-route-id="@item.Id" class="btn btn-outline-warning">Add Order</a>
+                    @*@Html.ActionLink("Index", "AddOrder", new { id = item.Id/* id=item.PrimaryKey */ })*@ |
+                    @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                    @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@await Html.PartialAsync("_WrapperEnd")

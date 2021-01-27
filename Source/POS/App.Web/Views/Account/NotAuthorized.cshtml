@@ -3,5 +3,15 @@
     ViewData["Title"] = "NotAuthorized";
 }
 
-    <h2>YOU ARE NOT AUTHORIZED TO PERFORM THIS ACTION!</h2>
-
+<div class="text-center">
+    <h1 class="display-4"><b>You are not authorized</b> for this action!</h1>
+    @*<p>System Point Of Sale</p>*@
+    <br />
+    <br />
+    <img src="~/img/loadanimation.gif" style="width: 20%; height: 20%" />
+</div>
+<script>
+    var timer = setTimeout(function () {
+        window.location = '/Account/Login'
+    }, 2000);
+</script>

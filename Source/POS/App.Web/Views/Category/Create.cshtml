@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Create";
 }
+@await Html.PartialAsync("_WrapperInit")
 
 <h1>Create</h1>
 
@@ -41,4 +42,4 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+@await Html.PartialAsync("_WrapperEnd")

@@ -14,28 +14,29 @@
 </head>
 @if (this.User.Identity.IsAuthenticated)
 {
-    <body>
-        <partial name="_Navbar" />
-        <partial name="_Sidebar" />
+<body>
+    @await Html.PartialAsync("_Navbar")
+    @await Html.PartialAsync("_Sidebar")
 
 
-        <partial name="_CookieConsentPartial" />
-        @*@await Html.PartialAsync("_StatusMessages")*@
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-        @*<partial name="_Footer" />*@
+    <partial name="_CookieConsentPartial" />
+    @*@await Html.PartialAsync("_StatusMessages")*@
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
-        <!-- REQUIRED SCRIPTS -->
-        <!-- jQuery -->
-        <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap 4 -->
-        <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="~/adminlte/dist/js/adminlte.min.js"></script>
+    @await Html.PartialAsync("_Footer")
 
-        @RenderSection("Scripts", required: false)
-    </body>
+    <!-- REQUIRED SCRIPTS -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
 }
 else
 {

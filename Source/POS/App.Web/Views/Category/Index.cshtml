@@ -3,10 +3,12 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 <br />
 <h1>Category</h1>
+<br />
+<br />
 <p>
     <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
 </p>
@@ -70,8 +72,6 @@
         </div>
     </div>
 </div>
-
-
 @section Scripts {
     <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script>
@@ -80,3 +80,4 @@
         });
     </script>
 }
+@await Html.PartialAsync("_WrapperEnd")

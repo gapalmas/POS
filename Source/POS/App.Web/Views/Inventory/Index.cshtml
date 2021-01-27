@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 @*<h1>Inventory</h1>*@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 <br />
@@ -57,40 +57,40 @@
 
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <th>
-                                @Html.DisplayFor(modelItem => item.InventoryId)
-                            </th>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Inventory.Stock)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Inventory.StockMin)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Inventory.StockMax)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Value)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Inventory.Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Inventory.DateUpdate)
-                            </td>
-                            @*<td>
-                                @Html.DisplayFor(modelItem => item.Inventory.Location)
-                            </td>*@
-                            <td>
-                                <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add</a>
-                                <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
-                                @*<a asp-action="Remove" asp-route-id="@item.InventoryId" class="btn btn-outline-danger">Remove</a>*@
-                            </td>
-                        </tr>
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.InventoryId)
+                                </th>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inventory.Stock)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inventory.StockMin)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inventory.StockMax)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inventory.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Inventory.DateUpdate)
+                                </td>
+                                @*<td>
+                                        @Html.DisplayFor(modelItem => item.Inventory.Location)
+                                    </td>*@
+                                <td>
+                                    <a asp-action="Create" asp-route-id="@item.InventoryId" class="btn btn-outline-primary">Add</a>
+                                    <a asp-action="Edit" asp-route-id="@item.InventoryId" class="btn btn-outline-warning">Edit</a>
+                                    @*<a asp-action="Remove" asp-route-id="@item.InventoryId" class="btn btn-outline-danger">Remove</a>*@
+                                </td>
+                            </tr>
                         }
 
                     </tbody>
@@ -108,3 +108,4 @@
         });
     </script>
 }
+@await Html.PartialAsync("_WrapperEnd")

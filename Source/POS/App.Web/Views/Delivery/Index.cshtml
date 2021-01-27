@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@await Html.PartialAsync("_WrapperInit")
 <h1>Deliveries</h1>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 <br />
@@ -48,35 +48,35 @@
 
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Customer.CommercialName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Delivery)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Confirm)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Date)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DateUpdate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Count)
-                            </td>
-                            <td>
-                                <button data-id="@item.Id" class="btn btn-outline-success poConfirm" data-toggle="modal" data-target="#confirmDialog">Confirm Delivery</button>
-                                <button data-id="@item.Id" class="btn btn-outline-danger cancelOrder" data-toggle="modal" data-target="#deleteDialog">Cancel</button>
-                                @*<a asp-action="Confirm" asp-route-id="@item.Id" class="btn btn-outline-primary">Confirm</a>
-                                <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-outline-danger">Cancel</a>*@
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Customer.CommercialName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Delivery)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Confirm)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateUpdate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Count)
+                                </td>
+                                <td>
+                                    <button data-id="@item.Id" class="btn btn-outline-success poConfirm" data-toggle="modal" data-target="#confirmDialog">Confirm Delivery</button>
+                                    <button data-id="@item.Id" class="btn btn-outline-danger cancelOrder" data-toggle="modal" data-target="#deleteDialog">Cancel</button>
+                                    @*<a asp-action="Confirm" asp-route-id="@item.Id" class="btn btn-outline-primary">Confirm</a>
+                                        <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-outline-danger">Cancel</a>*@
+                                </td>
+                            </tr>
                         }
 
                     </tbody>
@@ -155,3 +155,4 @@
         });
     </script>
 }
+@await Html.PartialAsync("_WrapperEnd")
