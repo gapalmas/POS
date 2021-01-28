@@ -123,7 +123,7 @@ namespace App.Web.Controllers
             });
             var client = await OperationsCus.FindAsync(c => c.Id == (int)id);
             TempData["PoId"] = purchase.Id;
-            TempData["Percent"] = client.Percent;
+            TempData["Percent"] = client.Percent.ToString();
             return this.RedirectToAction("AddProduct");
         }
 
