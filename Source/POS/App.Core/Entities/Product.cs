@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace App.Core.Entities
 {
@@ -12,7 +13,10 @@ namespace App.Core.Entities
         }
 
         public string Description { get; set; }
-        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        [RegularExpression(@"^\d+\.\d{0,2}$")]
+        [Range(0, 9999999999999999.99)]
+        [Column(TypeName = "decimal(18,4)")]
         public decimal Price { get; set; }
         public string ImagePath { get; set; }
         public string PartNumber { get; set; }

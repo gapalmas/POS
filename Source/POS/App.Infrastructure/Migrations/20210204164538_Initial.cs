@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace App.Infrastructure.Migrations
 {
-    public partial class InitialDB : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,7 +53,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -70,7 +69,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -86,7 +85,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -106,7 +105,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -115,7 +114,8 @@ namespace App.Infrastructure.Migrations
                     Rfc = table.Column<string>(nullable: true),
                     Cp = table.Column<decimal>(nullable: false),
                     Address = table.Column<string>(nullable: true),
-                    DayCredit = table.Column<int>(nullable: false)
+                    DayCredit = table.Column<int>(nullable: false),
+                    Percent = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +127,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -148,7 +148,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -165,7 +165,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -183,7 +183,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -204,7 +204,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -289,10 +289,12 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
+                    Delivery = table.Column<bool>(nullable: false),
+                    Confirm = table.Column<bool>(nullable: false),
                     CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -311,7 +313,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -333,7 +335,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -367,7 +369,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -391,7 +393,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -415,11 +417,12 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
+                    Price = table.Column<decimal>(nullable: true),
                     InventoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -438,12 +441,12 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
                     ImagePath = table.Column<string>(nullable: true),
                     PartNumber = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: false),
@@ -478,7 +481,7 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
@@ -508,13 +511,14 @@ namespace App.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Status = table.Column<bool>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DateUpdate = table.Column<DateTime>(nullable: false),
                     PurchaseOrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<double>(nullable: false)
+                    Quantity = table.Column<double>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -542,7 +546,8 @@ namespace App.Infrastructure.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -568,7 +573,8 @@ namespace App.Infrastructure.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true);
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Inventory_UnitId",

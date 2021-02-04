@@ -11,8 +11,6 @@ using App.Web.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using App.Web.Extensions.Alerts;
-using System.Diagnostics.Contracts;
-using App.Infrastructure.Migrations;
 using App.Web.DTOs;
 
 namespace App.Web.Controllers
