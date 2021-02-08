@@ -1,18 +1,19 @@
 ﻿using App.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
+using System.Reflection;
 
 namespace App.Infrastructure.Data
 {
+    /*Use header for IdentityDbContext for create & use model*/
     public class DataContext : IdentityDbContext<User>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 
-        #region 'Entities'
+        #region 'DbSet Entities'
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Clasification> Clasification { get; set; }
         public virtual DbSet<Company> Company { get; set; }
@@ -42,19 +43,11 @@ namespace App.Infrastructure.Data
                 //optionsBuilder.UseMySql("server=localhost;user id=root;password=;database=app_pos;");
             }
         }
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //builder.Entity<Category>().HasData(
-            //    new Core.Entities.Category() { Description = "HERRAMIENTAS", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
-            //    new Core.Entities.Category() { Description = "FERRETERIA", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true },
-            //    new Core.Entities.Category() { Description = "MADERA", Date = DateTime.Now, DateUpdate = DateTime.Now, Status = true }
-
-            //    );
-
-            /*builder.Entity<Product>().Property(p => p.Price).HasColumnType("decimal(18,2)");*/
-            /*Reference: https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete
-             */
-            var cascadeFKs = builder.Model
+            //Reference: https://docs.microsoft.com/en-us/ef/core/saving/cascade-delete
+            
+            var cascadeFKs = modelBuilder.Model
                 .GetEntityTypes()
                 .SelectMany(t => t
                 .GetForeignKeys()).Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
@@ -63,7 +56,11 @@ namespace App.Infrastructure.Data
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            base.OnModelCreating(builder);
+            base.OnModelCreating(modelBuilder);
+            /*Load All Configurations on Project */
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            /*Call Seeder */
+            Seed.Start(modelBuilder);
         }
     }
 }
