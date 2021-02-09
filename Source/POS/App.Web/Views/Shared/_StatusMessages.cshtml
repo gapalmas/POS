@@ -3,13 +3,19 @@
     var title = (string)TempData["_alert.title"];
     var body = (string)TempData["_alert.body"];
 }
-
-<div class="alert-container">
+<style>
+    .container {
+        padding-top:10px;
+    }
+</style>
+<div class="container ">
     @if (!string.IsNullOrEmpty(type))
     {
         <div class="alert alert-@type alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>@title</strong> @body
+            <center>
+                <strong>@title</strong> @body
+            </center>
         </div>
     }
 </div>

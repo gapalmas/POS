@@ -124,7 +124,7 @@ namespace App.Web.Controllers
             TempData["Percent"] = client.Percent.ToString();
             return this.RedirectToAction("AddProduct");
         }
-
+        // GET: Purchase/AddProduct
         /*Muestra los productos agregados de la orden de compra*/
         public async Task<IActionResult> AddProduct(int? id)
         {

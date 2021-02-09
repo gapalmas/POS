@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Point Of Sale(POS)</title>
+    
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -16,11 +17,12 @@
 {
 <body>
     @await Html.PartialAsync("_Navbar")
+    @await Html.PartialAsync("_StatusMessages")
     @await Html.PartialAsync("_Sidebar")
     @await Html.PartialAsync("_CookieConsentPartial")
-<main role="main" class="pb-3">
-    @RenderBody()
-</main>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
     @await Html.PartialAsync("_Footer")
 
