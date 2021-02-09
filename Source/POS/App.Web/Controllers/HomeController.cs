@@ -1,4 +1,5 @@
-﻿using App.Web.Features.Alerts;
+﻿using App.Web.Extensions.Alerts;
+using App.Web.Features.Alerts;
 using App.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;

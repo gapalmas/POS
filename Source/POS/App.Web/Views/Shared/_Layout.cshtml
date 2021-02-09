@@ -17,13 +17,10 @@
 <body>
     @await Html.PartialAsync("_Navbar")
     @await Html.PartialAsync("_Sidebar")
-
-
-    <partial name="_CookieConsentPartial" />
-    @await Html.PartialAsync("_StatusMessages")
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+    @await Html.PartialAsync("_CookieConsentPartial")
+<main role="main" class="pb-3">
+    @RenderBody()
+</main>
 
     @await Html.PartialAsync("_Footer")
 

@@ -3,6 +3,7 @@ using App.Core.Interfaces;
 using App.Core.UseCases;
 using App.Infrastructure.Data;
 using App.Web.Data;
+using App.Web.Features.Alerts;
 using App.Web.Helpers;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
@@ -112,7 +113,7 @@ namespace App.Web
             });
 
             services.AddHttpContextAccessor();
-            //services.AddScoped<AlertService>();
+            services.AddScoped<AlertService>();
 
             //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

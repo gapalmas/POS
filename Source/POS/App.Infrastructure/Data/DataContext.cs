@@ -60,7 +60,7 @@ namespace App.Infrastructure.Data
             /*Load All Configurations on Project */
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             /*Call Seeder */
-            Seed.Start(modelBuilder);
+            //Seed.Start(modelBuilder);
         }
     }
 }
