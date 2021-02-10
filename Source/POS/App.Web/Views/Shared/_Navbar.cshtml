@@ -1,70 +1,71 @@
 ﻿ <!-- #region 'Starter' -->
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-<!-- Left navbar links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            @*<a href="index3.html" class="nav-link">Home</a>*@
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">Configuration</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Suppliers</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Unit" asp-action="Index">Units/Measures</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouses</a>
+<div class="wrapper">
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                @*<a href="index3.html" class="nav-link">Home</a>*@
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Configuration</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index">Customers</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Supplier" asp-action="Index">Suppliers</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Unit" asp-action="Index">Units/Measures</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Warehouse" asp-action="Index">Warehouses</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Supplies</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">POs</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="Index">Purchase Order</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Delivery" asp-action="Index">Deliveries</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Reports</a>
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="MissingInventory">Missing Inventory</a>
+                </div>
+            </li>
+            @*<li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Contact</a>
+                </li>*@
+        </ul>
+        <!-- SEARCH FORM -->
+        <form class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">Supplies</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Product</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">POs</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Purchase" asp-action="Index">Purchase Order</a>
-                <a class="nav-link text-dark" asp-area="" asp-controller="Delivery" asp-action="Index">Deliveries</a>
-            </div>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-               aria-haspopup="true" aria-expanded="false">Reports</a>
-            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="MissingInventory">Missing Inventory</a>
-            </div>
-        </li>
-        @*<li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
-        </li>*@
-    </ul>
-<!-- SEARCH FORM -->
-<form class="form-inline ml-3">
-    <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-            <button class="btn btn-navbar" type="submit">
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-    </div>
-</form>
-<!-- Right navbar links -->
-<ul class="navbar-nav ml-auto">
-    @await Html.PartialAsync("_LoginPartial")
-    
-</ul>
-</nav>
-<!-- /.navbar -->
-<!--#endregion -->
+        </form>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            @await Html.PartialAsync("_LoginPartial")
+
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+    <!--#endregion -->
