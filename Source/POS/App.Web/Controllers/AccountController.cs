@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using App.Core.Entities;
 using App.Web.Helpers;
 using App.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -72,7 +73,7 @@ namespace App.Web.Controllers
         {
             return this.View();
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
         {

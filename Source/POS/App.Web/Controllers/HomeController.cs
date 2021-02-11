@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace App.Web.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly IMapper Mapper;
