@@ -148,6 +148,14 @@ namespace App.Core.UseCases
         {
             return Repository.CountAsync();
         }
+        public int CountCondition(Expression<Func<T, bool>> matchitem)
+        {
+            return Repository.CountCondition(matchitem);
+        }
+        public Task<int> CountAsyncCondition(Expression<Func<T, bool>> matchitem)
+        {
+            return Repository.CountAsyncCondition(matchitem);
+        }
         #endregion
         #region'Exist'
         public bool Exists(Expression<Func<T, bool>> matchitem)

@@ -48,6 +48,8 @@ namespace App.Core.Interfaces
         #region 'COUNT'
         int Count();
         Task<int> CountAsync();
+        Task<int> CountAsyncCondition(Expression<Func<T, bool>> matchitem);
+        int CountCondition(Expression<Func<T, bool>> matchitem);
         #endregion
         #region 'EXISTS'
         Boolean Exists(Expression<Func<T, bool>> matchitem);
@@ -56,7 +58,6 @@ namespace App.Core.Interfaces
         Task<T> FindIncludeAsync(Expression<Func<T, bool>> matchitem, Expression<Func<T, object>> criteria);
         Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
         Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, bool>> matchitem, params Expression<Func<T, object>>[] criteria);
-
         #endregion
     }
 }

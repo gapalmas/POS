@@ -196,6 +196,15 @@ namespace App.Infrastructure.Data
         {
             return await _dbContext.Set<T>().CountAsync();
         }
+
+        public int CountCondition(Expression<Func<T, bool>> matchitem)
+        {
+            return _dbContext.Set<T>().Count(matchitem);
+        }
+        public async Task<int> CountAsyncCondition(Expression<Func<T, bool>> matchitem)
+        {
+            return await _dbContext.Set<T>().CountAsync(matchitem);
+        }
         #endregion
         #region 'EXISTS'
         public bool Exist(Expression<Func<T, bool>> matchitem) /*Using for Generic Repository*/
