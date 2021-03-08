@@ -5,7 +5,8 @@
              x:Class="App.Movil.App">
   <Application.Resources>
 
-    <!-- Application resource dictionary -->
+        <!--Parameters-->
+        <x:String x:Key="UrlAPI">http://appos.somee.com/</x:String>
 
   </Application.Resources>
 </prism:PrismApplication>
