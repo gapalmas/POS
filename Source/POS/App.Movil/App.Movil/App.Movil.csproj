@@ -11,4 +11,8 @@
     <PackageReference Include="Prism.DryIoc.Forms" Version="8.0.0.1909" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\App.Common\App.Common.csproj" />
+  </ItemGroup>
+
 </Project>
