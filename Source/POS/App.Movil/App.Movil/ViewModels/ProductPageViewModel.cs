@@ -16,7 +16,7 @@ namespace App.Movil.ViewModels
 
         public ProductPageViewModel(INavigationService navigationService, IApiService apiService) : base (navigationService)
         {
-            this._apiService = apiService;
+            _apiService = apiService;
             Title = "Products";
             LoadProductsAsync();
         }
@@ -24,7 +24,7 @@ namespace App.Movil.ViewModels
         public ObservableCollection<Product> Products 
         { 
             get => _products; 
-            set => _products = value; 
+            set => SetProperty(ref _products, value); 
         }
 
         private async void LoadProductsAsync()
@@ -46,6 +46,7 @@ namespace App.Movil.ViewModels
             }
 
             var query = (List<Product>)response.Result;
+
             Products = new ObservableCollection<Product>(query);
         }
     }

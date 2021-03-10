@@ -11,9 +11,24 @@ namespace App.Common.Entities
         public string Description { get; set; }
         //[DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public string ImagePath { get; set; }
-        //public string PartNumber { get; set; }
+        public string partNumber { get; set; }
         //public int CategoryId { get; set; }
         //public int ClasificationId { get; set; }
         //public int InventoryId { get; set; }
+
+        public string ImageFullPath 
+        { 
+            get 
+            {
+                if (string.IsNullOrEmpty(ImagePath))
+                {
+                    return null;
+                }
+                else
+                {
+                    return "http://appos.somee.com/" + ImagePath.Substring(1);
+                }
+            } 
+        }
     }
 }
