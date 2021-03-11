@@ -13,9 +13,9 @@
         <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All" 
                      Padding="5">
-            <!--<SearchBar Placeholder="{i18n:Translate SearchProduct}"
+            <SearchBar Placeholder="Search a product..."
                        SearchCommand="{Binding SearchCommand}"
-                       Text="{Binding Search}"/>-->
+                       Text="{Binding Search}"/>
             <CollectionView ItemsSource="{Binding Products}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"/>
@@ -57,16 +57,15 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </StackLayout>
-        <busyindicator:SfBusyIndicator AnimationType="Box"
+        <busyindicator:SfBusyIndicator AnimationType="SingleCircle"
                                        AbsoluteLayout.LayoutBounds=".5,.5,.5,.5"
                                        AbsoluteLayout.LayoutFlags="All"
                                        HorizontalOptions="Center"
-                                       Background="Silver"
                                        TextColor="Gray"
                                        IsBusy="{Binding IsRunning}"
                                        Title="Loading..."
                                        VerticalOptions="Center"
-                                       ViewBoxWidth="50"
-                                       ViewBoxHeight="50" />
+                                       ViewBoxWidth="80"
+                                       ViewBoxHeight="80" />
     </AbsoluteLayout>
 </ContentPage>

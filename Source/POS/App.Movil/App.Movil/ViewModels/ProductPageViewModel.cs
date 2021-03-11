@@ -1,10 +1,12 @@
 ﻿using App.Common.Entities;
 using App.Common.Responses;
 using App.Common.Services;
+using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Essentials;
 
 namespace App.Movil.ViewModels
@@ -14,12 +16,28 @@ namespace App.Movil.ViewModels
         private readonly IApiService _apiService;
         private ObservableCollection<Product> _products;
         private bool _IsRunning;
+        private string _search;
+        private List<Product> _myProducts;
+        private DelegateCommand _searchCommand;
+
 
         public ProductPageViewModel(INavigationService navigationService, IApiService apiService) : base (navigationService)
         {
             _apiService = apiService;
             Title = "Products";
             LoadProductsAsync();
+        }
+
+        public DelegateCommand SearchCommand => _searchCommand ?? (_searchCommand = new DelegateCommand(ShowProducts));
+
+        public string Search 
+        {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                ShowProducts();
+            }
         }
 
         public bool IsRunning
@@ -52,10 +70,22 @@ namespace App.Movil.ViewModels
                 return;
             }
 
-            var query = (List<Product>)response.Result;
-
-            Products = new ObservableCollection<Product>(query);
+            _myProducts = (List<Product>)response.Result;
+            ShowProducts();
+            //Products = new ObservableCollection<Product>(_products);
             IsRunning = false;
+        }
+
+        private void ShowProducts()
+        {
+            if (string.IsNullOrEmpty(Search))
+            {
+                Products = new ObservableCollection<Product>(_myProducts);
+            }
+            else 
+            {
+                Products = new ObservableCollection<Product>(_myProducts.Where(p=> p.Description.ToLower().Contains(Search.ToLower())));
+            }
         }
     }
 }
