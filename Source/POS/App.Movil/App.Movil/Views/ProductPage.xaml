@@ -4,30 +4,34 @@
              xmlns:prism="http://prismlibrary.com"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=SyncFusion.SfBusyIndicator.Xforms"
              x:Class="App.Movil.Views.ProductPage"
              Title="{Binding Title}">
-    <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
+    <AbsoluteLayout>
+        <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1"
                      AbsoluteLayout.LayoutFlags="All" 
                      Padding="5">
-        <!--<SearchBar Placeholder="{i18n:Translate SearchProduct}"
+            <!--<SearchBar Placeholder="{i18n:Translate SearchProduct}"
                        SearchCommand="{Binding SearchCommand}"
                        Text="{Binding Search}"/>-->
-        <CollectionView ItemsSource="{Binding Products}">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <!--<Grid.GestureRecognizers>
+            <CollectionView ItemsSource="{Binding Products}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <!--<Grid.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding SelectProductCommand}"/>
                         </Grid.GestureRecognizers>-->
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <ffimageloading:CachedImage Grid.Column="0"
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ffimageloading:CachedImage Grid.Column="0"
                                                         Aspect="AspectFill"
                                                         Source="{Binding ImageFullPath}" 
                                                         CacheDuration= "50"
@@ -35,22 +39,34 @@
                                                         RetryCount= "3"
                                                         RetryDelay= "600"
                                                         WidthRequest="100"/>
-                        <StackLayout Grid.Column="1"
+                            <StackLayout Grid.Column="1"
                                          VerticalOptions="Center">
-                            <Label Text="{Binding Description}" 
+                                <Label Text="{Binding Description}" 
                                        FontAttributes="Bold"
                                        FontSize="Medium"
                                        LineBreakMode="TailTruncation" />
-                            <Label Text="{Binding partNumber}"
+                                <Label Text="{Binding PartNumbers}"
                                        LineBreakMode="TailTruncation"
                                        FontAttributes="Italic" 
                                        VerticalOptions="End" />
-                        </StackLayout>
-                        <Image Grid.Column="2" 
+                            </StackLayout>
+                            <Image Grid.Column="2" 
                                    Source="ic_more_vert"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+        <busyindicator:SfBusyIndicator AnimationType="Box"
+                                       AbsoluteLayout.LayoutBounds=".5,.5,.5,.5"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       HorizontalOptions="Center"
+                                       Background="Silver"
+                                       TextColor="Gray"
+                                       IsBusy="{Binding IsRunning}"
+                                       Title="Loading..."
+                                       VerticalOptions="Center"
+                                       ViewBoxWidth="50"
+                                       ViewBoxHeight="50" />
+    </AbsoluteLayout>
 </ContentPage>

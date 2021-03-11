@@ -13,12 +13,19 @@ namespace App.Movil.ViewModels
     {
         private readonly IApiService _apiService;
         private ObservableCollection<Product> _products;
+        private bool _IsRunning;
 
         public ProductPageViewModel(INavigationService navigationService, IApiService apiService) : base (navigationService)
         {
             _apiService = apiService;
             Title = "Products";
             LoadProductsAsync();
+        }
+
+        public bool IsRunning
+        {
+            get => _IsRunning;
+            set => SetProperty(ref _IsRunning, value);
         }
 
         public ObservableCollection<Product> Products 
@@ -35,7 +42,7 @@ namespace App.Movil.ViewModels
                 return;
             }
 
-            
+            IsRunning = true;
             string url = App.Current.Resources["UrlAPI"].ToString();
             Response response = await _apiService.GetListAsync<Product>(url, "/api", "/Product");
 
@@ -48,6 +55,7 @@ namespace App.Movil.ViewModels
             var query = (List<Product>)response.Result;
 
             Products = new ObservableCollection<Product>(query);
+            IsRunning = false;
         }
     }
 }

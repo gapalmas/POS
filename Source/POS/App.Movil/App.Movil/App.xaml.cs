@@ -3,6 +3,7 @@ using App.Movil.ViewModels;
 using App.Movil.Views;
 using Prism;
 using Prism.Ioc;
+using Syncfusion.Licensing;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
@@ -18,6 +19,8 @@ namespace App.Movil
 
         protected override async void OnInitialized()
         {
+            /* Documentation : https://help.syncfusion.com/xamarin/busy-indicator/getting-started */
+            SyncfusionLicenseProvider.RegisterLicense("NDEwOTc5QDMxMzgyZTM0MmUzMERueGhod281ZFczNjdMb01zNVo3S2tTakd2QW5sekJEcE1CaGFVdDNLVmc9");
             InitializeComponent();
 
             //await NavigationService.NavigateAsync("NavigationPage/MainPage");
