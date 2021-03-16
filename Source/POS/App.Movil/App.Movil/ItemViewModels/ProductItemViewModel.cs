@@ -16,7 +16,12 @@ namespace App.Movil.ItemViewModels
         public DelegateCommand SelectProductCommand => _selectProductCommand ?? (_selectProductCommand = new DelegateCommand(SelectProductAsync));
         private async void SelectProductAsync()
         {
-            await navigationService.NavigateAsync(nameof(ProductDetailPage));
+            NavigationParameters parameters = new NavigationParameters
+            {
+                { "product", this }
+            };
+
+            await navigationService.NavigateAsync(nameof(ProductDetailPage), parameters);
         }
     }
 }
