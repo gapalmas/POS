@@ -1,9 +1,9 @@
 ﻿using App.Common.Entities;
 using App.Common.Responses;
 using App.Common.Services;
+using App.Movil.ItemViewModels;
 using Prism.Commands;
 using Prism.Navigation;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,16 +13,18 @@ namespace App.Movil.ViewModels
 {
     public class ProductPageViewModel : ViewModelBase
     {
+        private readonly INavigationService navigationService;
         private readonly IApiService _apiService;
-        private ObservableCollection<Product> _products;
+        private ObservableCollection<ProductItemViewModel> _products;
         private bool _IsRunning;
         private string _search;
         private List<Product> _myProducts;
         private DelegateCommand _searchCommand;
 
 
-        public ProductPageViewModel(INavigationService navigationService, IApiService apiService) : base (navigationService)
+        public ProductPageViewModel(INavigationService navigationService, IApiService apiService) : base(navigationService)
         {
+            this.navigationService = navigationService;
             _apiService = apiService;
             Title = "Products";
             LoadProductsAsync();
@@ -30,7 +32,7 @@ namespace App.Movil.ViewModels
 
         public DelegateCommand SearchCommand => _searchCommand ?? (_searchCommand = new DelegateCommand(ShowProducts));
 
-        public string Search 
+        public string Search
         {
             get => _search;
             set
@@ -46,10 +48,10 @@ namespace App.Movil.ViewModels
             set => SetProperty(ref _IsRunning, value);
         }
 
-        public ObservableCollection<Product> Products 
-        { 
-            get => _products; 
-            set => SetProperty(ref _products, value); 
+        public ObservableCollection<ProductItemViewModel> Products
+        {
+            get => _products;
+            set => SetProperty(ref _products, value);
         }
 
         private async void LoadProductsAsync()
@@ -80,11 +82,25 @@ namespace App.Movil.ViewModels
         {
             if (string.IsNullOrEmpty(Search))
             {
-                Products = new ObservableCollection<Product>(_myProducts);
+                Products = new ObservableCollection<ProductItemViewModel>(_myProducts.Select(p=> new ProductItemViewModel(navigationService)
+                {
+                   Description = p.Description,
+                   Id = p.Id,
+                   PartNumber = p.PartNumber,
+                   ImagePath = p.ImagePath
+                    
+                }).ToList());
             }
-            else 
+            else
             {
-                Products = new ObservableCollection<Product>(_myProducts.Where(p=> p.Description.ToLower().Contains(Search.ToLower())));
+                Products = new ObservableCollection<ProductItemViewModel>(_myProducts.Select(p => new ProductItemViewModel(navigationService)
+                {
+                    Description = p.Description,
+                    Id = p.Id,
+                    PartNumber = p.PartNumber,
+                    ImagePath = p.ImagePath
+
+                }).Where(p=> p.Description.ToLower().Contains(Search.ToLower())).ToList());
             }
         }
     }
