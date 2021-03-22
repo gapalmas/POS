@@ -1,11 +1,13 @@
 ﻿using App.Common.Entities;
 using Prism.Navigation;
+using System.Collections.ObjectModel;
 
 namespace App.Movil.ViewModels
 {
     public class ProductDetailPageViewModel : ViewModelBase
     {
         private Product _product;
+        //private ObservableCollection<ProductImage> _images;
         public ProductDetailPageViewModel(INavigationService navigationService) : base(navigationService)
         {
             Title = "Product ...";

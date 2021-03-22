@@ -5,7 +5,96 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
+             xmlns:syncfusion="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="App.Movil.Views.ProductDetailPage"
              Title="{Binding Title}">
+
+    <StackLayout Padding="5">
+        <ScrollView>
+            <StackLayout>
+                <!--<syncfusion:SfRotator EnableAutoPlay="True"
+                                      EnableLooping="True"
+                                      HeightRequest="300"
+                                      ItemsSource="{Binding Products}"
+                                      NavigationDelay="5000"
+                                      NavigationDirection="Horizontal"
+                                      NavigationStripMode="Dots"
+                                      NavigationStripPosition="Bottom">
+                    <syncfusion:SfRotator.ItemTemplate>
+                        <DataTemplate>
+                            <ffimageloading:CachedImage Grid.Column="0"
+                                                        Aspect="AspectFill"
+                                                        Source="{Binding}" 
+                                                        CacheDuration= "50"
+                                                        Margin="5"
+                                                        RetryCount= "3"
+                                                        RetryDelay= "600"
+                                                        WidthRequest="100"/>
+                        </DataTemplate>
+                    </syncfusion:SfRotator.ItemTemplate>
+                </syncfusion:SfRotator>-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackLayout Margin="20,35,20,20" Orientation="Horizontal">
+                        <ffimageloading:CachedImage Grid.Column="0"
+                                                        Aspect="AspectFill"
+                                                        Source="{Binding Product.ImageFullPath}" 
+                                                        CacheDuration= "50"
+                                                        Margin="5"                                                
+                                                        RetryCount= "3"
+                                                        RetryDelay= "600"
+                                                        HeightRequest="300"
+                                                        />
+                    </StackLayout>
+            <!--<Label Grid.Row="0"
+                           Grid.Column="0"
+                           FontAttributes="Bold"
+                           Text="Name"/>-->
+                    <!--<Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Product.Name}"/>-->
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           FontAttributes="Bold"
+                           Text="Description"/>
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Text="{Binding Product.Description}"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="0"
+                           FontAttributes="Bold"
+                           Text="Price"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding Product.Price, StringFormat='{0:C2}'}"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="0"
+                           FontAttributes="Bold"
+                           Text="Category"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Text="{Binding Product.Category.Name}"/>
+                </Grid>
+                                      
+            </StackLayout>
+        </ScrollView>
+        <Button BackgroundColor="Green"
+                Command="{Binding AddToCart}"
+                CornerRadius="10"
+                Text="Add to cart"
+                TextColor="White"
+                VerticalOptions="EndAndExpand"/>
+    </StackLayout>
   
 </ContentPage>
